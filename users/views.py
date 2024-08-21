@@ -8,7 +8,9 @@ from users.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import logout
-
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import UserUpdateForm
 #home
 def index(request):
     categories = Category.objects.all()
@@ -149,3 +151,17 @@ def reset_password_view(request):
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+#profile update
+@login_required
+def update_profile_view(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been updated successfully!')
+            return redirect('update_profile')
+    else:
+        form = UserUpdateForm(instance=request.user)
+
+    return render(request, 'users/update_profile.html', {'form': form})
