@@ -11,6 +11,7 @@ from django.contrib.auth import update_session_auth_hash
 #home
 def index(request):
     return render(request, 'index.html')
+
 #login
 def login_view(request):
     if request.method == 'POST':
@@ -25,7 +26,8 @@ def login_view(request):
                 return send_otp_view(request)
     else:
         form = UserLoginForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'users/login.html', {'form': form})
+
 #register
 def signup_view(request):
     if request.method == 'POST':
@@ -53,7 +55,8 @@ def signup_view(request):
     else:
         form = UserRegistrationForm()
     
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'users/signup.html', {'form': form})
+
 
 OTP_SECRET_KEY = 'base32secret3232'
 #otp for verification
@@ -72,7 +75,8 @@ def send_otp_view(request):
         request.session['otp_code'] = otp_code
         request.session['email'] = email
         return redirect('verify_otp')
-    return render(request, 'send_otp.html')
+    return render(request, 'users/send_otp.html')
+
 #verify the otp for verification
 def verify_otp_view(request):
     if request.method == 'POST':
@@ -86,15 +90,15 @@ def verify_otp_view(request):
                 user.save()
                 return redirect('index')
             except get_user_model().DoesNotExist:
-                return render(request, 'verify_otp.html', {'error': 'User not found'})
+                return render(request, 'users/verify_otp.html', {'error': 'User not found'})
         else:
-            return render(request, 'verify_otp.html', {'error': 'Invalid OTP'})
-    return render(request, 'verify_otp.html')
-
+            return render(request, 'users/verify_otp.html', {'error': 'Invalid OTP'})
+    return render(request, 'users/verify_otp.html')
 
 #password forgot
 def forgot_password_view(request):
-    return render(request, 'forgot_password.html')
+    return render(request, 'users/forgot_password.html')
+
 #sending otp for pass forgot
 def send_password_otp_view(request):
     if request.method == 'POST':
@@ -120,8 +124,9 @@ def verify_password_otp_view(request):
         if otp.verify(user_input_code):
             return redirect('reset_password')
         else:
-            return render(request, 'verify_otp.html', {'error': 'Invalid OTP'})
-    return render(request, 'verify_password_otp.html')
+            return render(request, 'users/verify_password_otp.html', {'error': 'Invalid OTP'})
+    return render(request, 'users/verify_password_otp.html')
+
 #resetting the pass
 def reset_password_view(request):
     if request.method == 'POST':
@@ -134,5 +139,5 @@ def reset_password_view(request):
             update_session_auth_hash(request, user)  # Keeps the user logged in after password change
             return redirect('index')
         except get_user_model().DoesNotExist:
-            return render(request, 'reset_password.html', {'error': 'User not found'})
-    return render(request, 'reset_password.html')
+            return render(request, 'users/reset_password.html', {'error': 'User not found'})
+    return render(request, 'users/reset_password.html')
