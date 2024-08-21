@@ -1,29 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.contrib.auth import login as auth_login
 
-def home(request):
-    return render(request, 'home.html')
+from users.forms import UserLoginForm, UserRegistrationForm
 
+def index(request):
+    return render(request, 'index.html')
 
+def login_view(request):
+    if request.method == 'POST':
+        form = UserLoginForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth_login(request, user)
+            return redirect('index')  
+    else:
+        form = UserLoginForm()
+    return render(request, 'login.html', {'form': form})
 
-def cart(request):
-    return render(request, 'cart.html')
-
-
-def contact(request):
-    return render(request, 'contact.html')
-
-
-def product(request):
-    return render(request, 'product.html')
-
-
-def shop(request):
-    return render(request, 'shop.html')
-
-
-
-def checkout(request):
-    return render(request, 'checkout.html')
-
-def login(request):
-    return render(request, 'login.html')
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            auth_login(request, user)
+            return redirect('index') 
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'signup.html', {'form': form})

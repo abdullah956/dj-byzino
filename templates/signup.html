@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Signup</title>
+  </head>
+  <body>
+    <div>
+      <header>Signup</header>
+      <form action="{% url 'signup' %}" method="post">
+        {% csrf_token %}
+
+        <!-- Display non-field errors -->
+        {% if form.non_field_errors %}
+          <div>
+            {% for error in form.non_field_errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Email field -->
+        <div>
+          <label for="id_email">Email address</label>
+          <input type="email" name="email" maxlength="254" autofocus required id="id_email" placeholder="Enter email" />
+          {% for error in form.email.errors %}
+            <div>{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <!-- Password1 field -->
+        <div>
+          <label for="id_password1">Password</label>
+          <input type="password" name="password1" id="id_password1" placeholder="Password" autocomplete="off" />
+          {% for error in form.password1.errors %}
+            <div>{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <!-- Password2 field -->
+        <div>
+          <label for="id_password2">Password confirmation</label>
+          <input type="password" name="password2" id="id_password2" placeholder="Password" autocomplete="off" />
+          {% for error in form.password2.errors %}
+            <div>{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <!-- Password guidelines -->
+        <div>
+          <ul>
+            <li>Your password can’t be too similar to your other personal information.</li>
+            <li>Your password must contain at least 8 characters.</li>
+            <li>Your password can’t be a commonly used password.</li>
+            <li>Your password can’t be entirely numeric.</li>
+          </ul>
+        </div>
+
+        <!-- Signup button -->
+        <input type="submit" value="Signup" name="signup" />
+      </form>
+
+      <!-- Login link -->
+      <div>
+        <span>
+          Already have an account?
+          <a href="{% url 'login' %}">Login</a>
+        </span>
+      </div>
+    </div>
+  </body>
+</html>
