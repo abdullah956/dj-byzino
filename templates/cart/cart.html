@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/cart.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/cart_responsive.css' %}" />
+{% endblock %}
+{% block content %}
+  <!-- Home -->
+
+  <div class="home">
+    <div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/2_cleanup.png' %}" data-speed="0.8"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="home_container">
+            <div class="home_content">
+              <div class="home_title">Shopping Cart</div>
+              <div class="breadcrumbs">
+                <ul>
+                  <li>
+                    <a href="">Home</a>
+                  </li>
+                  <li>Shopping Cart</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart -->
+  <div class="cart_container">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="cart_title">your shopping cart</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="cart_bar d-flex flex-row align-items-center justify-content-start">
+            <div class="cart_bar_title_name">Product</div>
+            <div class="cart_bar_title_content ml-auto">
+              <div class="cart_bar_title_content_inner d-flex flex-row align-items-center justify-content-end">
+                <div class="cart_bar_title_price">Price</div>
+                <div class="cart_bar_title_quantity">Quantity</div>
+                <div class="cart_bar_title_total">Total</div>
+                <div class="cart_bar_title_button"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="cart_products">
+            <ul>
+              {% for item in cart_items %}
+                <li class="cart_product d-flex flex-md-row flex-column align-items-md-center align-items-start justify-content-start">
+                  <!-- Product Image -->
+                  <div class="cart_product_image">
+                    {% if item.product.image %}
+                      <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" />
+                    {% else %}
+                      <img src="{% static 'images/default-product.jpg' %}" alt="Default Image" />
+                    {% endif %}
+                  </div>
+                  <!-- Product Name -->
+                  <div class="cart_product_name">
+                    <a href="{% url 'product_detail' item.product.id %}">{{ item.product.name }}</a>
+                  </div>
+                  <div class="cart_product_info ml-auto">
+                    <div class="cart_product_info_inner d-flex flex-row align-items-center justify-content-md-end justify-content-start">
+                      <!-- Product Price -->
+                      <div class="cart_product_price" data-price="{{ item.product.price }}">${{ item.product.price|floatformat:2 }}</div>
+                      <!-- Product Quantity -->
+                      <div class="product_quantity_container">
+                        <div class="product_quantity clearfix">
+                          <input id="quantity_input_{{ item.id }}" class="quantity_input" type="text" pattern="[0-9]*" value="{{ item.quantity }}" readonly />
+                        </div>
+                      </div>
+                      <!-- Products Total Price -->
+                      <div class="cart_product_total" id="total_price_{{ item.id }}">{{ item.product.price|floatformat:2 }}</div>
+                      <!-- Product Cart Trash Button -->
+                      <div class="cart_product_button">
+                        <form action="{% url 'remove_from_cart' item.id %}" method="POST">
+                          {% csrf_token %}
+                          <button class="cart_product_remove"><img src="{% static 'images/trash.png' %}" alt="Remove" /></button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              {% empty %}
+                <li>No items in your cart.</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="cart_control_bar d-flex flex-md-row flex-column align-items-start justify-content-start">
+            <button class="button_clear cart_button">clear cart</button>
+            <button class="button_update cart_button_2 ml-md-auto">continue shopping</button>
+          </div>
+        </div>
+      </div>
+      <div class="row cart_extra">
+        <!-- Cart Total -->
+        <div class="col-lg-5 offset-lg-1">
+          <div class="cart_total">
+            <div class="cart_title">Cart Total</div>
+            <ul>
+              <li class="d-flex flex-row align-items-center justify-content-start">
+                <div class="cart_total_title">Subtotal</div>
+                <div class="cart_total_price ml-auto" id="cart_subtotal">$35.00</div>
+              </li>
+              <li class="d-flex flex-row align-items-center justify-content-start">
+                <div class="cart_total_title">Shipping</div>
+                <div class="cart_total_price ml-auto" id="cart_shipping">$5.00</div>
+              </li>
+              <li class="d-flex flex-row align-items-center justify-content-start">
+                <div class="cart_total_title">Total</div>
+                <div class="cart_total_price ml-auto" id="cart_total">$40.00</div>
+              </li>
+            </ul>
+            <form action="">
+              <button type="submit" class="cart_total_button">Proceed to Checkout</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Function to update total price
+      function updateTotalPrice() {
+        document.querySelectorAll('.cart_product').forEach(function (product) {
+          // Get price and quantity
+          const priceElement = product.querySelector('.cart_product_price')
+          const quantityInput = product.querySelector('.quantity_input')
+          const totalElement = product.querySelector('.cart_product_total')
+    
+          const price = parseFloat(priceElement.dataset.price)
+          const quantity = parseInt(quantityInput.value, 10)
+    
+          // Calculate total price
+          const total = price * quantity
+    
+          // Update total price in DOM
+          totalElement.textContent = `$${total.toFixed(2)}`
+        })
+      }
+    
+      // Call the function on page load
+      updateTotalPrice()
+    })
+    document.addEventListener('DOMContentLoaded', function () {
+      // Function to update total prices
+      function updateCartTotals() {
+        let subtotal = 0
+        document.querySelectorAll('.cart_product').forEach(function (product) {
+          // Get total price for each product
+          const totalElement = product.querySelector('.cart_product_total')
+          const totalPrice = parseFloat(totalElement.textContent.replace('$', ''))
+          subtotal += totalPrice
+        })
+    
+        // Update subtotal and total price
+        const shippingCost = 5.0 // Assuming fixed shipping cost
+        const total = subtotal + shippingCost
+    
+        document.getElementById('cart_subtotal').textContent = `$${subtotal.toFixed(2)}`
+        document.getElementById('cart_total').textContent = `$${total.toFixed(2)}`
+      }
+    
+      // Call the function on page load
+      updateCartTotals()
+    })
+  </script>
+{% endblock %}
