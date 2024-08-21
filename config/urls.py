@@ -6,7 +6,7 @@ from config import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
-    path('category/', include('users.urls')),
+    path('category/', include('categories.urls')),
 ]
 
 if settings.DEBUG:
