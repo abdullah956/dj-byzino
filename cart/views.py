@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Cart
@@ -35,3 +36,11 @@ def remove_from_cart(request, cart_item_id):
 def clear_cart(request):
     Cart.objects.filter(user=request.user).delete()
     return redirect('view_cart')
+
+
+def get_cart_count(request):
+    if request.user.is_authenticated:
+        count = Cart.objects.filter(user=request.user).count()
+    else:
+        count = 0
+    return JsonResponse({'count': count})

@@ -31,10 +31,10 @@
           <nav class="main_nav">
             <ul>
               <li>
-                <a href="">home</a>
+                <a href="{% url 'index' %}">home</a>
               </li>
               <li>
-                <a href="">shop</a>
+                <a href="{% url 'products' %}">shop</a>
               </li>
               <li>
                 <a href="">contact</a>
@@ -43,16 +43,10 @@
                 <li>
                   <a href="{% url 'logout' %}">Logout</a>
                 </li>
-                <li>
-                  <a href="{% url 'update_profile' %}">Update Profile</a>
-                </li>
+                <li></li>
               {% else %}
-                <li>
-                  <a href="{% url 'login' %}">Login</a>
-                </li>
-                <li>
-                  <a href="{% url 'signup' %}">Signup</a>
-                </li>
+                <li></li>
+                <li></li>
               {% endif %}
             </ul>
           </nav>
@@ -64,17 +58,21 @@
               </form>
             </div>
             <div class="shopping">
-              <a href="">
+              <a href="{% url 'view_cart' %}">
                 <div class="cart">
                   <img src="{% static 'images/shopping-bag.svg' %}" alt="" />
                   <div class="cart_num_container">
                     <div class="cart_num_inner">
-                      <div class="cart_num">1</div>
+                      <div id="cart_num" class="cart_num">0</div>
                     </div>
                   </div>
                 </div>
               </a>
-              <a href="">
+              <a href="{% if user.is_authenticated %}
+                  {% url 'update_profile' %}
+                {% else %}
+                  {% url 'login' %}
+                {% endif %}">
                 <div class="avatar">
                   <img src="{% static 'images/avatar.svg' %}" alt="" />
                 </div>
@@ -175,6 +173,24 @@
     <script src="{% static 'js/categories_custom.js' %}"></script>
     <script src="{% static 'js/product_custom.js' %}"></script>
     <script src="{% static 'js/checkout_custom.js' %}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Fetch the cart count
+        fetch('{% url "get_cart_count" %}')
+          .then((response) => response.json())
+          .then((data) => {
+            // Ensure the element exists before trying to set its textContent
+            const cartNumElement = document.getElementById('cart_num')
+            if (cartNumElement) {
+              cartNumElement.textContent = data.count
+            } else {
+              console.error('Element with id "cart_num" not found.')
+            }
+          })
+          .catch((error) => console.error('Error fetching cart count:', error))
+      })
+    </script>
+
     {% block extra_js %}
 
     {% endblock %}
