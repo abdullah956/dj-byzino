@@ -3,6 +3,7 @@ from django.contrib.auth import login as auth_login
 from django.core.mail import send_mail
 import pyotp
 from django.conf import settings
+from categories.models import Category
 from users.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
@@ -10,7 +11,8 @@ from django.contrib.auth import logout
 
 #home
 def index(request):
-    return render(request, 'index.html')
+    categories = Category.objects.all()
+    return render(request, 'index.html', {'categories': categories})
 
 #login
 def login_view(request):

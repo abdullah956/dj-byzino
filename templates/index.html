@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block content %}
-
   <!-- Menu -->
   <div class="menu d-flex flex-column align-items-end justify-content-start text-right menu_mm trans_400">
     <div class="menu_close_container">
@@ -93,53 +92,27 @@
         </div>
       </div>
       <div class="row promo_container">
-        <!-- Promo Item -->
-        <div class="col-lg-4 promo_col">
-          <div class="promo_item">
-            <div class="promo_image">
-              <img src="{% static 'images/promo_1.jpg' %}" alt="" />
-              <div class="promo_content promo_content_1">
-                <div class="promo_title">-30% off</div>
-                <div class="promo_subtitle">on all bags</div>
+        {% for category in categories %}
+          <!-- Promo Item -->
+          <div class="col-lg-4 promo_col">
+            <div class="promo_item">
+              <div class="promo_image">
+                {% if category.image %}
+                  <img src="{{ category.image.url }}" alt="{{ category.name }}" />
+                {% endif %}
+                <div class="promo_content">
+                  <div class="promo_title">-30% off</div> <!-- Adjust title as needed -->
+                  <div class="promo_subtitle">{{ category.name }}</div>
+                </div>
+              </div>
+              <div class="promo_link">
+                <a href="">Shop Now</a> <!-- Link to category page or relevant URL -->
               </div>
             </div>
-            <div class="promo_link">
-              <a href="">Shop Now</a>
-            </div>
           </div>
-        </div>
-
-        <!-- Promo Item -->
-        <div class="col-lg-4 promo_col">
-          <div class="promo_item">
-            <div class="promo_image">
-              <img src="{% static 'images/promo_2.jpg' %}" alt="" />
-              <div class="promo_content promo_content_2">
-                <div class="promo_title">-30% off</div>
-                <div class="promo_subtitle">coats & jackets</div>
-              </div>
-            </div>
-            <div class="promo_link">
-              <a href="">Shop Now</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Promo Item -->
-        <div class="col-lg-4 promo_col">
-          <div class="promo_item">
-            <div class="promo_image">
-              <img src="{% static 'images/promo_3.jpg' %}" alt="" />
-              <div class="promo_content promo_content_3">
-                <div class="promo_title">-25% off</div>
-                <div class="promo_subtitle">on Sandals</div>
-              </div>
-            </div>
-            <div class="promo_link">
-              <a href="">Shop Now</a>
-            </div>
-          </div>
-        </div>
+        {% empty %}
+          <p>No categories available.</p>
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -296,10 +269,10 @@
               </li>
             </ul>
           </div>
-          <!--       Uncomment if needed
+          <!--          Uncomment if needed
 				<div class="gallery_text text-center">*Integer ut imperdiet erat. Quisque ultricies lectus tellus, eu tristique magna pharetra.</div>
 				<div class="button gallery_button"><a href="#">submit</a></div>
-				      -->
+				         -->
         </div>
       </div>
     </div>
@@ -395,6 +368,4 @@
       </div>
     </div>
   </div>
-
-
 {% endblock %}
