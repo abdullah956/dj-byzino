@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/categories_responsive.css' %}" />
+{% endblock %}
+{% block content %}
+  <!-- Home -->
+  <div class="home">
+    <div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/contact.png' %}" data-speed="0.8"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="home_container">
+            <div class="home_content">
+              <div class="home_title">Shop</div>
+              <div class="breadcrumbs">
+                <ul>
+                  <li>
+                    <a href="">Home</a>
+                  </li>
+                  <li>Shop</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="products">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <!-- Sidebar Left -->
+          <div class="sidebar_left clearfix">
+            <!-- Best Sellers -->
+            <div class="sidebar_section">
+              <div class="sidebar_title">Best Sellers</div>
+              <div class="sidebar_section_content bestsellers_content">
+                <ul>
+                  <!-- Best Seller Item -->
+                  <li class="clearfix">
+                    <div class="best_image">
+                      <img src="{% static 'images/best_1.jpg' %}" alt="" />
+                    </div>
+                    <div class="best_content">
+                      <div class="best_title">
+                        <a href="">Blue dress with dots</a>
+                      </div>
+                      <div class="best_price">$45</div>
+                    </div>
+                    <div class="best_buy">+</div>
+                  </li>
+                  <!-- Best Seller Item -->
+                  <li class="clearfix">
+                    <div class="best_image">
+                      <img src="{% static 'images/best_2.jpg' %}" alt="" />
+                    </div>
+                    <div class="best_content">
+                      <div class="best_title">
+                        <a href="">White t-shirt</a>
+                      </div>
+                      <div class="best_price">$45</div>
+                    </div>
+                    <div class="best_buy">+</div>
+                  </li>
+                  <!-- Best Seller Item -->
+                  <li class="clearfix">
+                    <div class="best_image">
+                      <img src="{% static 'images/best_3.jpg' %}" alt="" />
+                    </div>
+                    <div class="best_content">
+                      <div class="best_title">
+                        <a href="">Blue dress with dots</a>
+                      </div>
+                      <div class="best_price">$45</div>
+                    </div>
+                    <div class="best_buy">+</div>
+                  </li>
+                  <!-- Best Seller Item -->
+                  <li class="clearfix">
+                    <div class="best_image">
+                      <img src="{% static 'images/best_4.jpg' %}" alt="" />
+                    </div>
+                    <div class="best_content">
+                      <div class="best_title">
+                        <a href="">White t-shirt</a>
+                      </div>
+                      <div class="best_price">$45</div>
+                    </div>
+                    <div class="best_buy">+</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Size -->
+            <div class="sidebar_section sidebar_options">
+              <div class="sidebar_section_content">
+                <!-- Option Item -->
+                <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
+                  <div class="option_image">
+                    <img src="{% static 'images/option_1.png' %}" alt="" />
+                  </div>
+                  <div class="option_content">
+                    <div class="option_title">30 Days Returns</div>
+                    <div class="option_subtitle">No questions asked</div>
+                  </div>
+                </div>
+                <!-- Option Item -->
+                <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
+                  <div class="option_image">
+                    <img src="{% static 'images/option_2.png' %}" alt="" />
+                  </div>
+                  <div class="option_content">
+                    <div class="option_title">Free Delivery</div>
+                    <div class="option_subtitle">On all orders</div>
+                  </div>
+                </div>
+                <!-- Option Item -->
+                <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
+                  <div class="option_image">
+                    <img src="{% static 'images/option_3.png' %}" alt="" />
+                  </div>
+                  <div class="option_content">
+                    <div class="option_title">Secure Payments</div>
+                    <div class="option_subtitle">No need to worry</div>
+                  </div>
+                </div>
+                <!-- Option Item -->
+                <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
+                  <div class="option_image">
+                    <img src="{% static 'images/option_4.png' %}" alt="" />
+                  </div>
+                  <div class="option_content">
+                    <div class="option_title">24/7 Support</div>
+                    <div class="option_subtitle">Just call us</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="current_page">Woman's Fashion</div>
+        </div>
+        <div class="col-12">
+          <div class="product_sorting clearfix">
+            <div class="sorting">
+              <ul class="item_sorting">
+                <li>
+                  <span class="sorting_text">Show all</span>
+                  <i class="fa fa-caret-down" aria-hidden="true"></i>
+                  <ul></ul>
+                </li>
+                <li>
+                  <span class="sorting_text">Show</span>
+                  <span class="num_sorting_text">12</span>
+                  <i class="fa fa-caret-down" aria-hidden="true"></i>
+                  <ul>
+                    <li class="num_sorting_btn">
+                      <span>3</span>
+                    </li>
+                    <li class="num_sorting_btn">
+                      <span>6</span>
+                    </li>
+                    <li class="num_sorting_btn">
+                      <span>12</span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row products_container">
+        <div class="col">
+          <!-- Products -->
+          <div class="product_grid">
+            <!-- Product -->
+            {% for product in products %}
+              <div class="product">
+                <div class="product_image">
+                  <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+                </div>
+                <div class="rating rating_{{ product.rating }}" data-rating="{{ product.rating }}">
+                  {% for i in "12345" %}
+                    <i class="fa fa-star{% if i > product.rating %}-o{% endif %}"></i>
+                  {% endfor %}
+                </div>
+                <div class="product_content clearfix">
+                  <div class="product_info">
+                    <div class="product_name">
+                      <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                    </div>
+                    <div class="product_price">
+                      {% if product.is_sale %}
+                        <span class="original_price">${{ product.price }}</span>
+                        <span class="sale_price">${{ product.sale_price }}</span>
+                      {% else %}
+                        ${{ product.price }}
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="product_options">
+                    <div class="product_buy product_option">
+                      <img src="{% static 'images/shopping-bag-white.svg' %}" alt="" />
+                    </div>
+                    <div class="product_fav product_option">+</div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

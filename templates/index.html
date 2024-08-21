@@ -106,7 +106,7 @@
                 </div>
               </div>
               <div class="promo_link">
-                <a href="">Shop Now</a> <!-- Link to category page or relevant URL -->
+                <a href="{% url 'category_products' category.id %}">Shop Now</a>
               </div>
             </div>
           </div>
@@ -269,10 +269,10 @@
               </li>
             </ul>
           </div>
-          <!--          Uncomment if needed
+          <!--           Uncomment if needed
 				<div class="gallery_text text-center">*Integer ut imperdiet erat. Quisque ultricies lectus tellus, eu tristique magna pharetra.</div>
 				<div class="button gallery_button"><a href="#">submit</a></div>
-				         -->
+				          -->
         </div>
       </div>
     </div>
