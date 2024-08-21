@@ -2,11 +2,11 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import login as auth_login
 from django.core.mail import send_mail
 import pyotp
-from django.contrib.auth.models import User
 from django.conf import settings
 from users.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import logout
 
 #home
 def index(request):
@@ -141,3 +141,9 @@ def reset_password_view(request):
         except get_user_model().DoesNotExist:
             return render(request, 'users/reset_password.html', {'error': 'User not found'})
     return render(request, 'users/reset_password.html')
+
+
+#logout
+def logout_view(request):
+    logout(request)
+    return redirect('index')
