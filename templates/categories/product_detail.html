@@ -49,18 +49,14 @@
           <div class="product_content">
             <div class="product_name">{{ product.name }}</div>
             <div class="product_price">
-              {% if product.is_sale %}
+              {% if product.is_on_sale %}
                 <span class="sale_price">${{ product.sale_price }}</span>
-                <span class="original_price">${{ product.price }}</span>
+                <span style="text-decoration: line-through; color: #888;">${{ product.price }}</span>
               {% else %}
                 ${{ product.price }}
               {% endif %}
             </div>
-            <div class="rating rating_4" data-rating="{{ product.rating }}">
-              {% for i in "12345" %}
-                <i class="fa fa-star{% if i|add:1 > product.rating %}-o{% endif %}"></i>
-              {% endfor %}
-            </div>
+            <div class="rating rating_4" data-rating="{{ product.rating }}"></div>
             <!-- In Stock -->
             <div class="in_stock_container">
               <div class="in_stock {% if product.is_in_stock %}
@@ -86,17 +82,7 @@
             <!-- Product Quantity -->
             <div class="product_quantity_container">
               <span>Quantity</span>
-              <div class="product_quantity clearfix">
-                <input id="quantity_input" type="text" pattern="[0-9]*" value="1" />
-                <div class="quantity_buttons">
-                  <div id="quantity_inc_button" class="quantity_inc quantity_control">
-                    <i class="fa fa-caret-up" aria-hidden="true"></i>
-                  </div>
-                  <div id="quantity_dec_button" class="quantity_dec quantity_control">
-                    <i class="fa fa-caret-down" aria-hidden="true"></i>
-                  </div>
-                </div>
-              </div>
+              <input id="quantity_input" type="number" value="1" min="1" step="1" />
             </div>
             <!-- Add to Cart Button -->
             <div class="product_size_container">
@@ -188,16 +174,12 @@
   </div>
   <script>
     function addToCart(productId) {
-      var quantity = document.getElementById('quantity_input').value;
-    // Construct the URL with placeholders
-    var url = "{% url 'add_to_cart' 0 0 %}".replace('0', productId).replace('0', quantity);
-    
-    // Log URL and values for debugging
-    console.log('URL:', url);
-    console.log('Quantity:', quantity, 'Product ID:', productId);
-    
-    // Redirect to constructed URL
-    window.location.href = url;
+      var quantity = document.getElementById('quantity_input').value
+      if (quantity === '' || quantity === '0') {
+        quantity = '1'
+      }
+      var url = "{% url 'add_to_cart' 0 0 %}".replace('0', productId).replace('0', quantity)
+      window.location.href = url
     }
   </script>
 {% endblock %}

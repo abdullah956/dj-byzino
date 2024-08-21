@@ -104,7 +104,10 @@
       <div class="row">
         <div class="col">
           <div class="cart_control_bar d-flex flex-md-row flex-column align-items-start justify-content-start">
-            <button class="button_clear cart_button">clear cart</button>
+            <form action="{% url 'clear_cart' %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="button_clear cart_button">Clear Cart</button>
+            </form>
             <button class="button_update cart_button_2 ml-md-auto">continue shopping</button>
           </div>
         </div>
@@ -138,48 +141,32 @@
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Function to update total price
       function updateTotalPrice() {
         document.querySelectorAll('.cart_product').forEach(function (product) {
-          // Get price and quantity
           const priceElement = product.querySelector('.cart_product_price')
           const quantityInput = product.querySelector('.quantity_input')
           const totalElement = product.querySelector('.cart_product_total')
-    
           const price = parseFloat(priceElement.dataset.price)
           const quantity = parseInt(quantityInput.value, 10)
-    
-          // Calculate total price
           const total = price * quantity
-    
-          // Update total price in DOM
           totalElement.textContent = `$${total.toFixed(2)}`
         })
       }
-    
-      // Call the function on page load
       updateTotalPrice()
     })
     document.addEventListener('DOMContentLoaded', function () {
-      // Function to update total prices
       function updateCartTotals() {
         let subtotal = 0
         document.querySelectorAll('.cart_product').forEach(function (product) {
-          // Get total price for each product
           const totalElement = product.querySelector('.cart_product_total')
           const totalPrice = parseFloat(totalElement.textContent.replace('$', ''))
           subtotal += totalPrice
         })
-    
-        // Update subtotal and total price
-        const shippingCost = 5.0 // Assuming fixed shipping cost
+        const shippingCost = 5.0
         const total = subtotal + shippingCost
-    
         document.getElementById('cart_subtotal').textContent = `$${subtotal.toFixed(2)}`
         document.getElementById('cart_total').textContent = `$${total.toFixed(2)}`
       }
-    
-      // Call the function on page load
       updateCartTotals()
     })
   </script>

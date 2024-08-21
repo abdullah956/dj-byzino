@@ -201,9 +201,6 @@
                   <img src="{{ product.image.url }}" alt="{{ product.name }}" />
                 </div>
                 <div class="rating rating_{{ product.rating }}" data-rating="{{ product.rating }}">
-                  {% for i in "12345" %}
-                    <i class="fa fa-star{% if i > product.rating %}-o{% endif %}"></i>
-                  {% endfor %}
                 </div>
                 <div class="product_content clearfix">
                   <div class="product_info">
@@ -211,9 +208,9 @@
                       <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
                     </div>
                     <div class="product_price">
-                      {% if product.is_sale %}
-                        <span class="original_price">${{ product.price }}</span>
+                      {% if product.is_on_sale %}
                         <span class="sale_price">${{ product.sale_price }}</span>
+                        <span style="text-decoration: line-through; color: #888;">${{ product.price }}</span>
                       {% else %}
                         ${{ product.price }}
                       {% endif %}
