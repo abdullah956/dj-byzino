@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block content %}
-
   <!-- Home -->
   <div class="home">
     <div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/contact.png' %}" data-speed="0.8"></div>
@@ -19,7 +18,9 @@
               <div class="home_title">Contact</div>
               <div class="breadcrumbs">
                 <ul>
-                  <li><a href="{% url 'home' %}">Home</a></li>
+                  <li>
+                    <a href="">Home</a>
+                  </li>
                   <li>Contact</li>
                 </ul>
               </div>
@@ -47,14 +48,15 @@
           <div class="review_form_container">
             <div class="review_form_title">get in touch</div>
             <div class="review_form_content">
-              <form action="#" id="review_form" class="review_form">
+              <form action="{% url 'contact_message' %}" method="post" id="review_form" class="review_form">
+                {% csrf_token %}
                 <div class="d-flex flex-md-row flex-column align-items-start justify-content-between">
-                  <input type="text" class="review_form_input" placeholder="Name" required="required" />
-                  <input type="email" class="review_form_input" placeholder="E-mail" required="required" />
-                  <input type="text" class="review_form_input" placeholder="Subject" />
+                  <input type="text" name="name" class="review_form_input" placeholder="Name" required="required" />
+                  <input type="email" name="email" class="review_form_input" placeholder="E-mail" required="required" />
+                  <input type="text" name="subject" class="review_form_input" placeholder="Subject" />
                 </div>
-                <textarea class="review_form_text" name="review_form_text" placeholder="Message"></textarea>
-                <button type="submit" class="review_form_button">send message</button>
+                <textarea name="review_form_text" class="review_form_text" placeholder="Message"></textarea>
+                <button type="submit" class="review_form_button">Send Message</button>
               </form>
             </div>
           </div>
@@ -95,8 +97,12 @@
             </div>
             <div class="contact_info_social">
               <ul>
-                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                <li>
+                  <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                </li>
               </ul>
             </div>
           </div>
@@ -142,5 +148,4 @@
       </div>
     </div>
   </div>
-
 {% endblock %}

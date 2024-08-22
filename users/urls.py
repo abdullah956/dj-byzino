@@ -19,4 +19,7 @@ urlpatterns = [
     path('profile/update/', views.update_profile_view, name='update_profile'),
     #subs
     path('subscribe/', views.subscribe_view, name='subscribe'),
+    #contact
+    path('contact/', views.contact_view, name='contact'),
+    path('contact/message', views.contact_message_view, name='contact_message'),
 ]

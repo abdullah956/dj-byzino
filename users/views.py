@@ -14,7 +14,6 @@ from django.contrib import messages
 from users.models import Subscriber
 from .forms import UserUpdateForm
 
-
 #home
 def index(request):
     categories = Category.objects.all()
@@ -182,3 +181,27 @@ def subscribe_view(request):
             subscriber.save()
         return redirect('index')
     return redirect('index')
+
+#contact
+def contact_view(request):
+    return render(request, 'users/contact.html')
+
+
+def contact_message_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('review_form_text')
+
+        email_subject = f"{subject}"
+        email_message = f"{message}"
+        recipient_email = settings.EMAIL_HOST_USER
+        send_mail(
+            email_subject,
+            email_message,
+            email,
+            [recipient_email],
+            fail_silently=False,
+        )
+        return redirect('index')
