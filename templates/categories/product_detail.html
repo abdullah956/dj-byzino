@@ -56,7 +56,11 @@
                 ${{ product.price }}
               {% endif %}
             </div>
-            <div class="rating rating_4" data-rating="{{ product.rating }}"></div>
+            <div class="rating rating_4" data-rating="{{ product.rating }}">
+              {% for i in "12345" %}
+                  <i class="fa fa-star{% if i|add:'0' <= review.stars %} checked{% endif %}"></i>
+              {% endfor %}
+            </div>
             <!-- In Stock -->
             <div class="in_stock_container">
               <div class="in_stock {% if product.is_in_stock %}

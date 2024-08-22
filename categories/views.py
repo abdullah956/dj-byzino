@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from categories.models import Category, Product, Review
-
+from django.db.models import Avg
 
 def products_view(request):
-    products = Product.objects.all()
+    products = Product.objects.annotate(
+        average_rating=Avg('review__stars')
+    )
     return render(request, 'categories/shop.html', {'products': products})
 
 
