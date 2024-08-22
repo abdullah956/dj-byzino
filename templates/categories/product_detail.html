@@ -61,11 +61,15 @@
             <div class="in_stock_container">
               <div class="in_stock {% if product.is_in_stock %}
                   
+                  
                   in_stock_true
+
 
                 {% else %}
                   
+                  
                   in_stock_false
+
 
                 {% endif %}"></div>
               <span>
@@ -87,7 +91,11 @@
             <!-- Add to Cart Button -->
             <div class="product_size_container">
               <div class="button cart_button">
-                <a href="" onclick="addToCart({{ product.id }}); return false;">add to cart</a>
+                {% if product.is_in_stock %}
+                  <a href="" onclick="addToCart({{ product.id }}); return false;">add to cart</a>
+                {% else %}
+                  <a href="javascript:void(0);" style="pointer-events: none; background-color: grey; color: white; cursor: not-allowed;">Out of Stock</a>
+                {% endif %}
               </div>
             </div>
           </div>
