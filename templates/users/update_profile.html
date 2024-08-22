@@ -24,13 +24,5 @@
 
       <button type="submit" class="btn btn-primary">Update</button>
     </form>
-
-    {% if messages %}
-      <ul class="mt-3">
-        {% for message in messages %}
-          <li class="alert alert-{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
   </div>
 {% endblock %}

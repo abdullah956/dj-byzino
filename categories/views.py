@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from categories.models import Category, Product, Review
 from django.db.models import Avg
 from django.core.paginator import Paginator
-
+from django.contrib import messages
 
 def products_view(request):
     products = Product.objects.annotate(
@@ -48,6 +48,8 @@ def category_products_view(request, category_id):
         'products': page_products
     })
 
+
+
 @login_required(login_url='/login/')
 def submit_review(request, product_id):
     if request.method == 'POST':
@@ -59,7 +61,8 @@ def submit_review(request, product_id):
         try:
             product = Product.objects.get(id=product_id)
         except Product.DoesNotExist:
-            return render(request, 'review_form.html', {'error': 'Product not found'})
+            messages.error(request, 'Product not found')
+            return redirect('product_detail', id=product_id)
 
         Review.objects.create(
             user=request.user,
@@ -70,7 +73,8 @@ def submit_review(request, product_id):
             stars=stars
         )
 
+        messages.success(request, 'Review submitted successfully!')
         return redirect('product_detail', id=product_id)
 
+    messages.warning(request, 'Invalid request method.')
     return redirect('product_detail', id=product_id)
-

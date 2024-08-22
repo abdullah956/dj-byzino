@@ -3,17 +3,25 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Cart
 from categories.models import Product
-
+from django.contrib import messages
 
 @login_required(login_url='/login/')
 def add_to_cart(request, product_id, quantity):
     product = get_object_or_404(Product, id=product_id)
     quantity = int(quantity)
+    
+    if quantity <= 0:
+        messages.error(request, 'Quantity must be a positive number.')
+        return redirect('view_cart')
+
     cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
     if not created:
         cart_item.quantity += quantity
+        messages.success(request, f'Added {quantity} more of {product.name} to your cart.')
     else:
         cart_item.quantity = quantity
+        messages.success(request, f'Added {product.name} to your cart.')
+
     cart_item.save()
     return redirect('view_cart')
 
@@ -38,12 +46,13 @@ def view_cart(request):
 def remove_from_cart(request, cart_item_id):
     cart_item = get_object_or_404(Cart, id=cart_item_id, user=request.user)
     cart_item.delete()
+    messages.success(request, 'Item removed from your cart.')
     return redirect('view_cart')
 
 def clear_cart(request):
     Cart.objects.filter(user=request.user).delete()
+    messages.success(request, 'Your cart has been cleared.')
     return redirect('view_cart')
-
 
 def get_cart_count(request):
     if request.user.is_authenticated:
