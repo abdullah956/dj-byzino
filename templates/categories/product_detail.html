@@ -102,43 +102,63 @@
 
       <!-- Reviews -->
       <div class="row">
-        <div class="col">
-          <div class="reviews">
-            <div class="reviews_title">Reviews</div>
-            <div class="reviews_container">
-              <ul>
-                {% for review in reviews %}
-                  <li class="review clearfix">
-                    <div class="review_image">
-                      {% if review.user.avatar %}
-                        <img src="{{ review.user.avatar.url }}" alt="{{ review.user.name }}" />
-                      {% else %}
-                        <img src="{% static 'images/reviewdefault.png' %}" alt="Default Avatar" />
-                      {% endif %}
-                    </div>
-                    <div class="review_content">
-                      <div class="review_name">
-                        <a href="">{{ review.name }}</a>
-                      </div>
-                      <div class="review_date">{{ review.created_at|date:'M d, Y' }}</div>
-                      <div class="rating rating_{{ review.stars }} review_rating" data-rating="{{ review.stars }}">
-                        {% for i in "12345" %}
-                          <i class="fa fa-star{% if i|add:'0' <= review.stars %} checked{% endif %}"></i>
-                        {% endfor %}
-                      </div>
-                      <div class="review_text">
-                        <p>{{ review.review }}</p>
-                      </div>
-                    </div>
-                  </li>
-                {% empty %}
-                  <li>No reviews yet.</li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </div>
+  <div class="col">
+    <div class="reviews">
+      <div class="reviews_title">Reviews</div>
+      <div class="reviews_container">
+        <ul>
+          {% for review in reviews %}
+            <li class="review clearfix">
+              <div class="review_image">
+                {% if review.user.avatar %}
+                  <img src="{{ review.user.avatar.url }}" alt="{{ review.user.name }}" />
+                {% else %}
+                  <img src="{% static 'images/reviewdefault.png' %}" alt="Default Avatar" />
+                {% endif %}
+              </div>
+              <div class="review_content">
+                <div class="review_name">
+                  <a href="">{{ review.name }}</a>
+                </div>
+                <div class="review_date">{{ review.created_at|date:'M d, Y' }}</div>
+                <div class="rating rating_{{ review.stars }} review_rating" data-rating="{{ review.stars }}">
+                  {% for i in "12345" %}
+                    <i class="fa fa-star{% if i|add:'0' <= review.stars %} checked{% endif %}"></i>
+                  {% endfor %}
+                </div>
+                <div class="review_text">
+                  <p>{{ review.review }}</p>
+                </div>
+              </div>
+            </li>
+          {% empty %}
+            <li>No reviews yet.</li>
+          {% endfor %}
+        </ul>
       </div>
+      
+      <!-- Pagination Controls -->
+      <div class="pagination_container">
+        <ul class="pagination">
+          {% if reviews.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ reviews.previous_page_number }}">Previous</a></li>
+          {% endif %}
+          {% for num in reviews.paginator.page_range %}
+            {% if reviews.number == num %}
+              <li class="page-item active"><a class="page-link">{{ num }}</a></li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if reviews.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ reviews.next_page_number }}">Next</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <!-- Leave a Review -->
       <div class="row">

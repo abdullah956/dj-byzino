@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from categories.models import Category, Product, Review
 from django.db.models import Avg
+from django.core.paginator import Paginator
 
 def products_view(request):
     products = Product.objects.annotate(
@@ -9,14 +10,19 @@ def products_view(request):
     )
     return render(request, 'categories/shop.html', {'products': products})
 
+
 def product_detail_view(request, id):
     product = get_object_or_404(Product, id=id)
     reviews = Review.objects.filter(product=product)
     average_rating = reviews.aggregate(Avg('stars'))['stars__avg']
 
+    paginator = Paginator(reviews, 3)
+    page_number = request.GET.get('page')
+    page_reviews = paginator.get_page(page_number)
+
     context = {
         'product': product,
-        'reviews': reviews,
+        'reviews': page_reviews,
         'average_rating': average_rating,
     }
     return render(request, 'categories/product_detail.html', context)
