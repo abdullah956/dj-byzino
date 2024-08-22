@@ -23,9 +23,18 @@ class User(AbstractUser, BasedModel):
         return self.email
 
 
-class Subscriber(models.Model):
+class Subscriber(BasedModel):
     email = models.EmailField(unique=True)
     is_subscribed = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.email} - {'Subscribed' if self.is_subscribed else 'Not Subscribed'}"
+    
+class ContactMessage(BasedModel):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=255, blank=True, null=True)
+    message = models.TextField()
+
+    def __str__(self):
+        return f"Message from {self.email}"

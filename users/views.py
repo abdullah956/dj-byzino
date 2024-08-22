@@ -11,7 +11,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from users.models import Subscriber
+from users.models import ContactMessage, Subscriber
 from .forms import UserUpdateForm
 
 #home
@@ -178,22 +178,21 @@ def subscribe_view(request):
 def contact_view(request):
     return render(request, 'users/contact.html')
 
-
 def contact_message_view(request):
     if request.method == 'POST':
+        # Get form data from POST request
         name = request.POST.get('name')
         email = request.POST.get('email')
         subject = request.POST.get('subject')
         message = request.POST.get('review_form_text')
 
-        email_subject = f"{subject}"
-        email_message = f"{message}"
-        recipient_email = settings.EMAIL_HOST_USER
-        send_mail(
-            email_subject,
-            email_message,
-            email,
-            [recipient_email],
-            fail_silently=False,
+        # Create and save the ContactMessage instance
+        ContactMessage.objects.create(
+            name=name,
+            email=email,
+            subject=subject,
+            message=message
         )
+
+        # Redirect to a success page or back to the index
         return redirect('index')
