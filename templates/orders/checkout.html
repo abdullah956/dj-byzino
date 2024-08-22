@@ -36,89 +36,93 @@
 
   <!-- Checkout -->
   {% load static %}
-
   <div class="checkout">
-    <div class="container">
-      <div class="row">
-        <!-- Billing Details -->
-        <div class="col-lg-6">
-          <div class="billing">
-            <div class="checkout_title">Billing Details</div>
-            <div class="checkout_form_container">
-              <form action="#" id="checkout_form">
+    <form action="{% url 'checkout_process' %}" method="post" id="checkout_form">
+      <div class="container">
+        <div class="row">
+          <!-- Billing Details -->
+
+          <div class="col-lg-6">
+            <div class="billing">
+              <div class="checkout_title">Billing Details</div>
+              <div class="checkout_form_container">
+                {% csrf_token %}
                 <div class="d-flex flex-lg-row flex-column align-items-start justify-content-between">
-                  <input type="text" class="checkout_input checkout_input_50" placeholder="First Name" required="required" />
-                  <input type="text" class="checkout_input checkout_input_50" placeholder="Last Name" required="required" />
+                  <input type="text" name="first_name" class="checkout_input checkout_input_50" placeholder="First Name" required="required" />
+                  <input type="text" name="last_name" class="checkout_input checkout_input_50" placeholder="Last Name" required="required" />
                 </div>
-                <input type="text" class="checkout_input" placeholder="Company Name" />
-                <input type="text" class="checkout_input" placeholder="E-mail" required="required" />
-                <select name="country" id="country" class="country_select checkout_input">
-                  <option>Country</option>
-                  <option>Country</option>
-                  <option>Country</option>
-                </select>
-                <input type="text" class="checkout_input" placeholder="Billing Address" required="required" />
-                <input type="text" class="checkout_input" placeholder="Shipping Address" required="required" />
-                <input type="text" class="checkout_input" placeholder="Town" required="required" />
+                <input type="email" name="email" class="checkout_input" placeholder="E-mail" required="required" />
+                <input name="country" id="country" placeholder="Country" class="checkout_input" required="required" />
+                <input name="state" id="state" placeholder="State" class="checkout_input" required="required" />
+                <input name="city" id="city" class="checkout_input" placeholder="City" required="required" />
+                <input type="text" name="billing_address" class="checkout_input" placeholder="Billing Address" required="required" />
+                <input type="text" name="shipping_address" class="checkout_input" placeholder="Shipping Address" required="required" />
                 <div class="d-flex flex-lg-row flex-column align-items-start justify-content-between">
-                  <input type="text" class="checkout_input checkout_input_50" placeholder="Zipcode" required="required" />
-                  <input type="text" class="checkout_input checkout_input_50" placeholder="Phone No" required="required" />
+                  <input type="text" name="postal_code" class="checkout_input checkout_input_50" placeholder="Postal Code" required="required" />
+                  <input type="text" name="phone" class="checkout_input checkout_input_50" placeholder="Phone No" required="required" />
                 </div>
-              </form>
+                <!-- Hidden inputs for cart items -->
+                {% for item in cart_items %}
+                  <input type="hidden" name="products[id]" value="{{ item.product.id }}" />
+                  <input type="hidden" name="products[quantity]" value="{{ item.quantity }}" />
+                {% endfor %}
+
+                <div class="payment_options">
+                  <div>
+                    <input type="radio" id="radio_payment_1" name="payment_method" value="cod" class="regular_radio" />
+                    <label for="radio_payment_1">Cash on Delivery</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="radio_payment_2" name="payment_method" value="bank_transfer" class="regular_radio" checked />
+                    <label for="radio_payment_2">Bank Transfer</label>
+                    <div class="visa payment_option">
+                      <a href="#"><img src="{% static 'images/visa.jpg' %}" alt="Visa" /></a>
+                    </div>
+                    <div class="master payment_option">
+                      <a href="#"><img src="{% static 'images/master.jpg' %}" alt="MasterCard" /></a>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="cart_total_button">Place Order</button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Cart Details -->
-        <div class="col-lg-6">
-          <div class="cart_details">
-            <div class="checkout_title">Cart Total</div>
-            <div class="cart_total">
-              <ul>
-                <li class="d-flex flex-row align-items-center justify-content-start">
-                  <div class="cart_total_title">Product</div>
-                  <div class="cart_total_price ml-auto">Total</div>
-                </li>
-                {% for item in cart_items %}
+          <!-- Cart Details -->
+          <div class="col-lg-6">
+            <div class="cart_details">
+              <div class="checkout_title">Cart Total</div>
+              <div class="cart_total">
+                <ul>
                   <li class="d-flex flex-row align-items-center justify-content-start">
-                    <div class="cart_total_title">{{ item.product.name }} x{{ item.quantity }}</div>
-                    <div class="cart_total_price ml-auto">${{ item.total_price|floatformat:2 }}</div>
+                    <div class="cart_total_title">Product</div>
+                    <div class="cart_total_price ml-auto">Total</div>
                   </li>
-                {% endfor %}
-                <li class="d-flex flex-row align-items-center justify-content-start">
-                  <div class="cart_total_title">Subtotal</div>
-                  <div class="cart_total_price ml-auto">${{ subtotal }}</div>
-                </li>
-                <li class="d-flex flex-row align-items-center justify-content-start">
-                  <div class="cart_total_title">Shipping</div>
-                  <div class="cart_total_price ml-auto">${{ shipping_cost }}</div>
-                </li>
-                <li class="d-flex flex-row align-items-start justify-content-start total_row">
-                  <div class="cart_total_title">Total</div>
-                  <div class="cart_total_price ml-auto">${{ total }}</div>
-                </li>
-              </ul>
-            </div>
-            <div class="payment_options">
-              <div>
-                <input type="radio" id="radio_payment_1" name="regular_radio" class="regular_radio" />
-                <label for="radio_payment_1">Cash on Delivery</label>
+                  {% for item in cart_items %}
+                    <li class="d-flex flex-row align-items-center justify-content-start">
+                      <div class="cart_total_title">{{ item.product.name }} x{{ item.quantity }}</div>
+                      <div class="cart_total_price ml-auto">${{ item.total_price }}</div>
+                    </li>
+                  {% endfor %}
+                  <li class="d-flex flex-row align-items-center justify-content-start">
+                    <div class="cart_total_title">Subtotal</div>
+                    <div class="cart_total_price ml-auto">${{ subtotal }}</div>
+                  </li>
+                  <li class="d-flex flex-row align-items-center justify-content-start">
+                    <div class="cart_total_title">Shipping</div>
+                    <div class="cart_total_price ml-auto">${{ shipping_cost }}</div>
+                  </li>
+                  <li class="d-flex flex-row align-items-start justify-content-start total_row">
+                    <div class="cart_total_title">Total</div>
+                    <div class="cart_total_price ml-auto">${{ total }}</div>
+                    <input type="hidden" name="total" value="{{ total }}" />
+                  </li>
+                </ul>
               </div>
-              <div>
-                <input type="radio" id="radio_payment_2" name="regular_radio" class="regular_radio" checked />
-                <label for="radio_payment_2">Bank Transfer</label>
-                <div class="visa payment_option">
-                  <a href="#"><img src="{% static 'images/visa.jpg' %}" alt="Visa" /></a>
-                </div>
-                <div class="master payment_option">
-                  <a href="#"><img src="{% static 'images/master.jpg' %}" alt="MasterCard" /></a>
-                </div>
-              </div>
-              <button class="cart_total_button">Place Order</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 {% endblock %}

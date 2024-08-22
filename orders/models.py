@@ -8,6 +8,7 @@ class Order(BasedModel):
     first_name = models.CharField(max_length=55)
     last_name = models.CharField(max_length=55)
     products = models.JSONField() 
+    email = models.EmailField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     is_shipped = models.BooleanField(default=False)
     payment_method = models.CharField(max_length=50, choices=[
