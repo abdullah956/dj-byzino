@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from config import settings
 from config.models import BasedModel
 from .managers import UserManager
 
@@ -20,3 +21,11 @@ class User(AbstractUser, BasedModel):
     objects = UserManager()
     def __str__(self):
         return self.email
+
+
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)
+    is_subscribed = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.email} - {'Subscribed' if self.is_subscribed else 'Not Subscribed'}"

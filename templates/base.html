@@ -143,9 +143,10 @@
             <div class="row newsletter_container">
               <div class="col-lg-10 offset-lg-1">
                 <div class="newsletter_form_container">
-                  <form action="#">
-                    <input type="email" class="newsletter_input" required="required" placeholder="E-mail here" />
-                    <button type="submit" class="newsletter_button">subscribe</button>
+                  <form action="{% url 'subscribe' %}" method="post">
+                    {% csrf_token %}
+                    <input type="email" class="newsletter_input" name="email" required="required" placeholder="E-mail here" />
+                    <button type="submit" class="newsletter_button">Subscribe</button>
                   </form>
                 </div>
               </div>

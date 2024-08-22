@@ -1,3 +1,4 @@
+from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.contrib.auth import login as auth_login
 from django.core.mail import send_mail
@@ -10,7 +11,10 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from users.models import Subscriber
 from .forms import UserUpdateForm
+
+
 #home
 def index(request):
     categories = Category.objects.all()
@@ -165,3 +169,16 @@ def update_profile_view(request):
         form = UserUpdateForm(instance=request.user)
 
     return render(request, 'users/update_profile.html', {'form': form})
+
+#subs
+def subscribe_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if not email:
+            return HttpResponseBadRequest("Email is required.")
+        subscriber, created = Subscriber.objects.get_or_create(email=email)
+        if not created:
+            subscriber.is_subscribed = True
+            subscriber.save()
+        return redirect('index')
+    return redirect('index')

@@ -17,4 +17,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     #profile update
     path('profile/update/', views.update_profile_view, name='update_profile'),
+    #subs
+    path('subscribe/', views.subscribe_view, name='subscribe'),
 ]
