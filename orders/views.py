@@ -1,5 +1,5 @@
 from decimal import Decimal
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from cart.models import Cart
 from categories.models import Product
 from orders.models import Order
@@ -29,7 +29,6 @@ def checkout_view(request):
 
 def checkout_process_view(request):
     if request.method == 'POST':
-        # Extract form data
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
@@ -47,8 +46,6 @@ def checkout_process_view(request):
         for product_id, quantity in zip(product_ids, quantities):
             products.append({'product_id': product_id, 'quantity': quantity})
         total_amount = int(float(request.POST.get('total')) * 100)
-        if payment_method == 'bank_transfer':
-            return redirect(f'/order/create-checkout-session/{total_amount}/')
         order = Order.objects.create(
             user=request.user,
             first_name=first_name,
@@ -68,12 +65,14 @@ def checkout_process_view(request):
             products=products
         )
         order.save()
+        if payment_method == 'bank_transfer':
+            return redirect(f'/order/create-checkout-session/{order.id}/{total_amount}/')
         return redirect('index')
     return render(request, 'orders/checkout.html')
 
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
-def create_checkout_session(request, amount):
+def create_checkout_session(request, order_id , amount):
     if request.method == 'GET':
         YOUR_DOMAIN = "http://localhost:8000" 
         checkout_session = stripe.checkout.Session.create(
@@ -91,15 +90,22 @@ def create_checkout_session(request, amount):
                 },
             ],
             mode='payment',
-            success_url=f'{YOUR_DOMAIN}/order/success/',
+            success_url=f'{YOUR_DOMAIN}/order/success/{order_id}',
             cancel_url=f'{YOUR_DOMAIN}/order/cancel/',
         )
         return redirect(checkout_session.url, code=303)
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+def success_view(request,order_id):
 
-def success_view(request):
+    if order_id:
+        try:
+            order = get_object_or_404(Order, id=order_id)
+            order.is_paid = 'True'
+            order.save()
+        except Order.DoesNotExist:
+            print(f"Order with ID {order_id} does not exist")
     return render(request, 'orders/success.html')
 
 

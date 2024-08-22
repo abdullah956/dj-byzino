@@ -11,6 +11,7 @@ class Order(BasedModel):
     email = models.EmailField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     is_shipped = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)
     payment_method = models.CharField(max_length=50, choices=[
         ('bank_transfer', 'Bank Transfer'),
         ('cod', 'Cash on Delivery'),
