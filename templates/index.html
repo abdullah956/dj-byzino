@@ -120,46 +120,50 @@
   <!-- New Arrivals -->
   <div class="arrivals">
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="section_title_container text-center">
-                    <div class="section_subtitle">only the best</div>
-                    <div class="section_title">featured products</div>
-                </div>
-            </div>
+      <div class="row">
+        <div class="col">
+          <div class="section_title_container text-center">
+            <div class="section_subtitle">only the best</div>
+            <div class="section_title">featured products</div>
+          </div>
         </div>
-        <div class="row products_container">
-            {% for product in featured_products %}
-            <div class="col-lg-4 product_col">
-                <div class="product">
-                    <div class="product_image">
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" />
-                    </div>
-                    <div class="rating">
-                        {% for i in "12345" %}
-                        <i class="fa fa-star" style="color: {% if i|add:'0' <= product.average_rating|default:0 %}gold{% else %}gray{% endif %};"></i>
-                        {% endfor %}
-                    </div>
-                    <div class="product_content clearfix">
-                        <div class="product_info">
-                            <div class="product_name">
-                                <a href="">{{ product.name }}</a>
-                            </div>
-                            <div class="product_price">${{ product.price }}</div>
-                        </div>
-                        <div class="product_options">
-                            <div class="product_buy product_option">
-                                <img src="{% static 'images/shopping-bag-white.svg' %}" alt="Buy {{ product.name }}" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
+      </div>
+      <div class="row products_container">
+        {% for product in featured_products %}
+          <div class="col-lg-4 product_col">
+            <div class="product">
+              <div class="product_image">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+              </div>
+              <div class="rating">
+                {% for i in "12345" %}
+                  <i class="fa fa-star"
+                    style="color: {% if i|add:'0' <= product.average_rating|default:0 %}
+                      gold
+                    {% else %}
+                      gray
+                    {% endif %};">
 
+                  </i>
+                {% endfor %}
+              </div>
+              <div class="product_content clearfix">
+                <div class="product_info">
+                  <div class="product_name">
+                    <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                  </div>
+                  <div class="product_price">${{ product.price }}</div>
+                </div>
+                <div class="product_options">
+                  <a href="{% url 'add_to_cart' product.id 1 %}" class="product_buy product_option"><img src="{% static 'images/shopping-bag-white.svg' %}" alt="Buy {{ product.name }}" /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 
   <!-- Extra -->
   <div class="extra clearfix">
@@ -212,10 +216,10 @@
               </li>
             </ul>
           </div>
-          <!--           Uncomment if needed
+          <!--            Uncomment if needed
 				<div class="gallery_text text-center">*Integer ut imperdiet erat. Quisque ultricies lectus tellus, eu tristique magna pharetra.</div>
 				<div class="button gallery_button"><a href="#">submit</a></div>
-				          -->
+				           -->
         </div>
       </div>
     </div>
@@ -256,59 +260,41 @@
   </div>
 
   <!-- Testimonials -->
-
-  <div class="testimonials">
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <div class="section_title_container text-center">
-            <div class="section_subtitle">only the best</div>
-            <div class="section_title">testimonials</div>
-          </div>
+<div class="testimonials">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="section_title_container text-center">
+          <div class="section_subtitle">only the best</div>
+          <div class="section_title">testimonials</div>
         </div>
       </div>
-      <div class="row test_slider_container">
-        <div class="col">
-          <!-- Testimonials Slider -->
-          <div class="owl-carousel owl-theme test_slider text-center">
+    </div>
+    <div class="row test_slider_container">
+      <div class="col">
+        <!-- Testimonials Slider -->
+        <div class="owl-carousel owl-theme test_slider text-center">
+          {% for review in five_star_reviews %}
             <!-- Testimonial Item -->
             <div class="owl-item">
-              <div class="test_text">“Integer ut imperdiet erat. Quisque ultricies lectus tellus, eu tristique magna pharetra nec. Fusce vel lorem libero. Integer ex mi, facilisis sed nisi ut, vestibulum ultrices nulla. Aliquam egestas tempor leo.”</div>
+              <div class="test_text">“{{ review.review }}”</div>
               <div class="test_content">
                 <div class="test_image">
-                  <img src="{% static 'images/testimonials.jpg' %}" alt="" />
+                  {% if review.user.avatar %}
+                        <img src="{{ review.user.avatar.url }}" alt="{{ review.user.name }}" />
+                      {% else %}
+                        <img src="{% static 'images/reviewdefault.png' %}" alt="Default Avatar" />
+                      {% endif %}
                 </div>
-                <div class="test_name">Christinne Smith</div>
+                <div class="test_name">{{ review.name}}</div>
                 <div class="test_title">client</div>
               </div>
             </div>
-
-            <!-- Testimonial Item -->
-            <div class="owl-item">
-              <div class="test_text">“Integer ut imperdiet erat. Quisque ultricies lectus tellus, eu tristique magna pharetra nec. Fusce vel lorem libero. Integer ex mi, facilisis sed nisi ut, vestibulum ultrices nulla. Aliquam egestas tempor leo.”</div>
-              <div class="test_content">
-                <div class="test_image">
-                  <img src="{% static 'images/testimonials.jpg' %}" alt="" />
-                </div>
-                <div class="test_name">Christinne Smith</div>
-                <div class="test_title">client</div>
-              </div>
-            </div>
-
-            <!-- Testimonial Item -->
-            <div class="owl-item">
-              <div class="test_text">“Integer ut imperdiet erat. Quisque ultricies lectus tellus, eu tristique magna pharetra nec. Fusce vel lorem libero. Integer ex mi, facilisis sed nisi ut, vestibulum ultrices nulla. Aliquam egestas tempor leo.”</div>
-              <div class="test_content">
-                <div class="test_image">
-                  <img src="{% static 'images/testimonials.jpg' %}" alt="" />
-                </div>
-                <div class="test_name">Christinne Smith</div>
-                <div class="test_title">client</div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
   </div>
+</div>
+
 {% endblock %}

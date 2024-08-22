@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from users.models import ContactMessage, Subscriber
 from .forms import UserUpdateForm
-from categories.models import Product, Category
+from categories.models import Product, Category, Review
 from django.db.models import Avg
 
 #home
@@ -22,10 +22,15 @@ def index(request):
         average_rating=Avg('review__stars')
     )
 
+    # Fetch the first 5 five-star reviews from the Review table
+    five_star_reviews = Review.objects.filter(stars=5).select_related('product')[:5]
+
     return render(request, 'index.html', {
         'categories': categories,
         'featured_products': featured_products,
+        'five_star_reviews': five_star_reviews,
     })
+
 
 #login
 def login_view(request):

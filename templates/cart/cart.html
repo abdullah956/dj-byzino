@@ -108,7 +108,9 @@
               {% csrf_token %}
               <button type="submit" class="button_clear cart_button">Clear Cart</button>
             </form>
-            <button class="button_update cart_button_2 ml-md-auto">continue shopping</button>
+            <form action="{% url 'products'%}">
+              <button class="button_update cart_button_2 ml-md-auto">continue shopping</button>
+            </form>
           </div>
         </div>
       </div>
