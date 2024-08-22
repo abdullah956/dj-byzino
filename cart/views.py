@@ -15,16 +15,21 @@ def add_to_cart(request, product_id, quantity):
     cart_item.save()
     return redirect('view_cart')
 
+
 def view_cart(request):
     cart_items = Cart.objects.filter(user=request.user)
+    out_of_stock_items = []
     for item in cart_items:
         product = item.product
         if product.is_on_sale:
-            product.price = product.sale_price
-
+            item_price = product.sale_price
         else:
-            product.price = product.price
-    
+            item_price = product.price
+        item.product.price = item_price
+        if product.is_in_stock <= 0:
+            out_of_stock_items.append(item.id)
+    if out_of_stock_items:
+        Cart.objects.filter(id__in=out_of_stock_items).delete()
     return render(request, 'cart/cart.html', {'cart_items': cart_items})
 
 

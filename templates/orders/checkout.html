@@ -79,21 +79,23 @@
                   <div class="cart_total_title">Product</div>
                   <div class="cart_total_price ml-auto">Total</div>
                 </li>
-                <li class="d-flex flex-row align-items-center justify-content-start">
-                  <div class="cart_total_title">2 Piece Swimsuit x1</div>
-                  <div class="cart_total_price ml-auto">$35.00</div>
-                </li>
+                {% for item in cart_items %}
+                  <li class="d-flex flex-row align-items-center justify-content-start">
+                    <div class="cart_total_title">{{ item.product.name }} x{{ item.quantity }}</div>
+                    <div class="cart_total_price ml-auto">${{ item.total_price|floatformat:2 }}</div>
+                  </li>
+                {% endfor %}
                 <li class="d-flex flex-row align-items-center justify-content-start">
                   <div class="cart_total_title">Subtotal</div>
-                  <div class="cart_total_price ml-auto">$35.00</div>
+                  <div class="cart_total_price ml-auto">${{ subtotal }}</div>
                 </li>
                 <li class="d-flex flex-row align-items-center justify-content-start">
                   <div class="cart_total_title">Shipping</div>
-                  <div class="cart_total_price ml-auto">$5.00</div>
+                  <div class="cart_total_price ml-auto">${{ shipping_cost }}</div>
                 </li>
                 <li class="d-flex flex-row align-items-start justify-content-start total_row">
                   <div class="cart_total_title">Total</div>
-                  <div class="cart_total_price ml-auto">$40.00</div>
+                  <div class="cart_total_price ml-auto">${{ total }}</div>
                 </li>
               </ul>
             </div>
@@ -119,7 +121,4 @@
       </div>
     </div>
   </div>
-
-  
-
 {% endblock %}
