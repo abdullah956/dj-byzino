@@ -60,8 +60,8 @@
           </nav>
           <div class="header_content ml-auto">
             <div class="search header_search">
-              <form action="">
-                <input type="search" class="search_input" required="required" />
+              <form action="{% url 'product_search' %}">
+                <input type="search" class="search_input" name="q" required="required" />
                 <button type="submit" id="search_button" class="search_button"><img src="{% static 'images/magnifying-glass.svg' %}" alt="" /></button>
               </form>
             </div>
@@ -110,8 +110,8 @@
           <a href="#"><img src="{% static 'images/logo.png' %}" alt="" style="width: 210px" /></a>
         </div>
         <div class="search">
-          <form action="">
-            <input type="search" class="search_input menu_mm" required="required" />
+          <form action="{% url 'product_search' %}" method="get">
+            <input type="search" name="q" class="search_input menu_mm" required="required" />
             <button type="submit" id="search_button_menu" class="search_button menu_mm"><img class="menu_mm" src="{% static 'images/magnifying-glass.svg' %}" alt="" /></button>
           </form>
         </div>

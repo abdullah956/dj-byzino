@@ -183,15 +183,11 @@
                   <img src="{{ product.image.url }}" alt="{{ product.name }}" />
                 </div>
                 <div class="rating rating_{{ product.rating }}" data-rating="{{ product.rating }}">
-                  {% if product.average_rating %}
+                  
                      {% for i in "12345" %}
                            <i class="fa fa-star" style="color: {% if i|add:'0' <= product.average_rating %}gold{% else %}gray{% endif %};"></i>
                     {% endfor %}
-                  {% else %}
-                      {% for i in "12345" %}
-                          <i class="fa fa-star{% if i|add:'0' <= review.stars %} checked{% endif %}"></i>
-                        {% endfor %}
-                  {% endif %}
+                  
                 </div>
                 <div class="product_content clearfix">
                   <div class="product_info">

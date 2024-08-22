@@ -4,7 +4,6 @@ from django.contrib.auth import login as auth_login
 from django.core.mail import send_mail
 import pyotp
 from django.conf import settings
-from categories.models import Category
 from users.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
@@ -13,11 +12,20 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from users.models import ContactMessage, Subscriber
 from .forms import UserUpdateForm
+from categories.models import Product, Category
+from django.db.models import Avg
 
 #home
 def index(request):
     categories = Category.objects.all()
-    return render(request, 'index.html', {'categories': categories})
+    featured_products = Product.objects.filter(is_featured=True).annotate(
+        average_rating=Avg('review__stars')
+    )
+
+    return render(request, 'index.html', {
+        'categories': categories,
+        'featured_products': featured_products,
+    })
 
 #login
 def login_view(request):
@@ -134,7 +142,7 @@ def reset_password_view(request):
             user = get_user_model().objects.get(email=email)
             user.set_password(new_password)
             user.save()
-            update_session_auth_hash(request, user)  # Keeps the user logged in after password change
+            update_session_auth_hash(request, user)
             auth_login(request, user)
             return redirect('index')
         except get_user_model().DoesNotExist:
@@ -180,19 +188,23 @@ def contact_view(request):
 
 def contact_message_view(request):
     if request.method == 'POST':
-        # Get form data from POST request
         name = request.POST.get('name')
         email = request.POST.get('email')
         subject = request.POST.get('subject')
         message = request.POST.get('review_form_text')
-
-        # Create and save the ContactMessage instance
         ContactMessage.objects.create(
             name=name,
             email=email,
             subject=subject,
             message=message
         )
-
-        # Redirect to a success page or back to the index
         return redirect('index')
+    
+#search
+def product_search_view(request):
+    query = request.GET.get('q', '')
+    products = Product.objects.filter(name__icontains=query)
+    return render(request, 'users/search_result.html', {
+        'products': products,
+        'query': query,
+    })

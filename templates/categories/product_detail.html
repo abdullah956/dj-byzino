@@ -57,15 +57,11 @@
               {% endif %}
             </div>
             <div class="rating rating_4" data-rating="{{ product.rating }}">
-              {% if average_rating %}
+              
                      {% for i in "12345" %}
                            <i class="fa fa-star" style="color: {% if i|add:'0' <= average_rating %}gold{% else %}gray{% endif %};"></i>
                     {% endfor %}
-                  {% else %}
-                      {% for i in "12345" %}
-                          <i class="fa fa-star{% if i|add:'0' <= review.stars %} checked{% endif %}"></i>
-                        {% endfor %}
-                  {% endif %}
+                  
             </div>
             <!-- In Stock -->
             <div class="in_stock_container">

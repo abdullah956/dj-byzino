@@ -22,4 +22,6 @@ urlpatterns = [
     #contact
     path('contact/', views.contact_view, name='contact'),
     path('contact/message', views.contact_message_view, name='contact_message'),
+    #search
+    path('search/', views.product_search_view, name='product_search'),
 ]

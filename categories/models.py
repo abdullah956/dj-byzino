@@ -17,6 +17,7 @@ class Product(BasedModel):
     description = models.TextField()
     image = models.ImageField(upload_to='product_images/', blank=True, null=True)
     is_on_sale = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False)
     sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     is_in_stock = models.BooleanField(default=True)
 

@@ -120,103 +120,46 @@
   <!-- New Arrivals -->
   <div class="arrivals">
     <div class="container">
-      <div class="row">
-        <div class="col">
-          <div class="section_title_container text-center">
-            <div class="section_subtitle">only the best</div>
-            <div class="section_title">featured products</div>
-          </div>
+        <div class="row">
+            <div class="col">
+                <div class="section_title_container text-center">
+                    <div class="section_subtitle">only the best</div>
+                    <div class="section_title">featured products</div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="row products_container">
-        <!-- Product -->
-        <div class="col-lg-4 product_col">
-          <div class="product">
-            <div class="product_image">
-              <img src="{% static 'images/P1.jpeg' %}" alt="" />
-            </div>
-            <div class="rating rating_4">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product_content clearfix">
-              <div class="product_info">
-                <div class="product_name">
-                  <a href="">Woman's Long Dress</a>
+        <div class="row products_container">
+            {% for product in featured_products %}
+            <div class="col-lg-4 product_col">
+                <div class="product">
+                    <div class="product_image">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+                    </div>
+                    <div class="rating">
+                        {% for i in "12345" %}
+                        <i class="fa fa-star" style="color: {% if i|add:'0' <= product.average_rating|default:0 %}gold{% else %}gray{% endif %};"></i>
+                        {% endfor %}
+                    </div>
+                    <div class="product_content clearfix">
+                        <div class="product_info">
+                            <div class="product_name">
+                                <a href="">{{ product.name }}</a>
+                            </div>
+                            <div class="product_price">${{ product.price }}</div>
+                        </div>
+                        <div class="product_options">
+                            <div class="product_buy product_option">
+                                <img src="{% static 'images/shopping-bag-white.svg' %}" alt="Buy {{ product.name }}" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="product_price">$45.00</div>
-              </div>
-              <div class="product_options">
-                <div class="product_buy product_option">
-                  <img src="{% static 'images/shopping-bag-white.svg' %}" alt="" />
-                </div>
-              </div>
             </div>
-          </div>
+            {% endfor %}
         </div>
-
-        <!-- Product -->
-        <div class="col-lg-4 product_col">
-          <div class="product">
-            <div class="product_image">
-              <img src="{% static 'images/P2.jpeg' %}" alt="" />
-            </div>
-            <div class="rating rating_5">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product_content clearfix">
-              <div class="product_info">
-                <div class="product_name">
-                  <a href="">Men's Sports Shoes</a>
-                </div>
-                <div class="product_price">$75.00</div>
-              </div>
-              <div class="product_options">
-                <div class="product_buy product_option">
-                  <img src="{% static 'images/shopping-bag-white.svg' %}" alt="" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product -->
-        <div class="col-lg-4 product_col">
-          <div class="product">
-            <div class="product_image">
-              <img src="{% static 'images/P3.jpg' %}" alt="" />
-            </div>
-            <div class="rating rating_4">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product_content clearfix">
-              <div class="product_info">
-                <div class="product_name">
-                  <a href="">Leather Backpack</a>
-                </div>
-                <div class="product_price">$95.00</div>
-              </div>
-              <div class="product_options">
-                <div class="product_buy product_option">
-                  <img src="{% static 'images/shopping-bag-white.svg' %}" alt="" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
 
   <!-- Extra -->
   <div class="extra clearfix">
