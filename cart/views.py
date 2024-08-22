@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Cart
 from categories.models import Product
 
+
+@login_required(login_url='/login/')
 def add_to_cart(request, product_id, quantity):
     product = get_object_or_404(Product, id=product_id)
     quantity = int(quantity)
