@@ -44,21 +44,9 @@ def signup_view(request):
             if user.is_verified:
                 auth_login(request, user)
                 return redirect('index')
-            otp = pyotp.TOTP(settings.OTP_SECRET_KEY, interval=300)
-            otp_code = otp.now()
-
-            send_mail(
-                'Your OTP Code',
-                f'Your OTP code is {otp_code}.',
-                settings.DEFAULT_FROM_EMAIL,
-                [user.email],
-                fail_silently=False,
-            )
-
-            request.session['otp_code'] = otp_code
-            request.session['email'] = user.email
-
-            return redirect('verify_otp')
+            else:
+                request.POST = {'email': user.email}
+                return send_otp_view(request)
     else:
         form = UserRegistrationForm()
     
@@ -82,7 +70,6 @@ def send_otp_view(request):
         request.session['otp_code'] = otp_code
         request.session['email'] = email
         return redirect('verify_otp')
-    return render(request, 'users/send_otp.html')
 
 #verify the otp for verification
 def verify_otp_view(request):
@@ -90,16 +77,19 @@ def verify_otp_view(request):
         user_email = request.session.get('email')
         user_input_code = request.POST.get('otp_code')
         otp = pyotp.TOTP(settings.OTP_SECRET_KEY, interval=300)
+
         if otp.verify(user_input_code):
             try:
                 user = get_user_model().objects.get(email=user_email)
                 user.is_verified = True
                 user.save()
+                auth_login(request, user)
                 return redirect('index')
             except get_user_model().DoesNotExist:
                 return render(request, 'users/verify_otp.html', {'error': 'User not found'})
         else:
             return render(request, 'users/verify_otp.html', {'error': 'Invalid OTP'})
+    
     return render(request, 'users/verify_otp.html')
 
 #password forgot
@@ -122,6 +112,7 @@ def send_password_otp_view(request):
         request.session['otp_code'] = otp_code
         request.session['email'] = email
         return redirect('verify_password_otp')
+    
 #verify otp for pass forgot
 def verify_password_otp_view(request):
     if request.method == 'POST':
@@ -144,6 +135,7 @@ def reset_password_view(request):
             user.set_password(new_password)
             user.save()
             update_session_auth_hash(request, user)  # Keeps the user logged in after password change
+            auth_login(request, user)
             return redirect('index')
         except get_user_model().DoesNotExist:
             return render(request, 'users/reset_password.html', {'error': 'User not found'})

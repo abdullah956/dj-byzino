@@ -37,7 +37,7 @@
                 <a href="{% url 'products' %}">shop</a>
               </li>
               <li>
-                <a href="{% url 'contact'%}">contact</a>
+                <a href="{% url 'contact' %}">contact</a>
               </li>
               {% if user.is_staff %}
                 <li>
@@ -66,7 +66,11 @@
               </form>
             </div>
             <div class="shopping">
-              <a href="{% url 'view_cart' %}">
+              <a href="{% if user.is_authenticated %}
+                  {% url 'view_cart' %}
+                {% else %}
+                  {% url 'login' %}
+                {% endif %}">
                 <div class="cart">
                   <img src="{% static 'images/shopping-bag.svg' %}" alt="" />
                   <div class="cart_num_container">
