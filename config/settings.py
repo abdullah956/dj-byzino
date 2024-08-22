@@ -145,3 +145,7 @@ EMAIL_HOST_PASSWORD = 'xuqyykmhdflkjbsu'
 
 # settings.py
 OTP_SECRET_KEY = 'base32secret3232'  # Replace with a secure key in production
+
+# stripe fake
+STRIPE_TEST_PUBLIC_KEY = 'pk_test_TYooMQauvdEDq54NiTphI7jx'
+STRIPE_TEST_SECRET_KEY = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'

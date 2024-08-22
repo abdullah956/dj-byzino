@@ -1,10 +1,11 @@
 from decimal import Decimal
-import json
 from django.shortcuts import redirect, render
-from django.contrib.auth.decorators import login_required
 from cart.models import Cart
 from categories.models import Product
 from orders.models import Order
+import stripe
+from django.conf import settings
+from django.http import JsonResponse
 
 def checkout_view(request):
     cart_items = Cart.objects.filter(user=request.user)
@@ -26,8 +27,6 @@ def checkout_view(request):
     }
     return render(request, 'orders/checkout.html', context)
 
-
-
 def checkout_process_view(request):
     if request.method == 'POST':
         # Extract form data
@@ -42,16 +41,14 @@ def checkout_process_view(request):
         postal_code = request.POST.get('postal_code')
         phone = request.POST.get('phone')
         payment_method = request.POST.get('payment_method')
-
-        # Extract product data
         products = []
         product_ids = request.POST.getlist('products[id]')
         quantities = request.POST.getlist('products[quantity]')
         for product_id, quantity in zip(product_ids, quantities):
             products.append({'product_id': product_id, 'quantity': quantity})
-
-        total_amount = request.POST.get('total')
-
+        total_amount = int(float(request.POST.get('total')) * 100)
+        if payment_method == 'bank_transfer':
+            return redirect(f'/order/create-checkout-session/{total_amount}/')
         order = Order.objects.create(
             user=request.user,
             first_name=first_name,
@@ -71,9 +68,40 @@ def checkout_process_view(request):
             products=products
         )
         order.save()
-        # Clear the cart if needed
-        # Cart.objects.filter(user=request.user).delete()
-
-        return redirect('index')  # Redirect to a success page or similar
-
+        return redirect('index')
     return render(request, 'orders/checkout.html')
+
+stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+
+def create_checkout_session(request, amount):
+    if request.method == 'GET':
+        YOUR_DOMAIN = "http://localhost:8000" 
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'usd',
+                        'product_data': {
+                            'name': 'Sample Product',
+                        },
+                        'unit_amount': int(amount),
+                    },
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=f'{YOUR_DOMAIN}/order/success/',
+            cancel_url=f'{YOUR_DOMAIN}/order/cancel/',
+        )
+        return redirect(checkout_session.url, code=303)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+def success_view(request):
+    return render(request, 'orders/success.html')
+
+
+def cancel_view(request):
+    return render(request, 'orders/cancel.html')
