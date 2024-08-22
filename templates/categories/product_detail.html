@@ -60,17 +60,9 @@
             <!-- In Stock -->
             <div class="in_stock_container">
               <div class="in_stock {% if product.is_in_stock %}
-                  
-                  
                   in_stock_true
-
-
-                {% else %}
-                  
-                  
+                {% else %} 
                   in_stock_false
-
-
                 {% endif %}"></div>
               <span>
                 {% if product.is_in_stock %}
@@ -106,53 +98,36 @@
       <div class="row">
         <div class="col">
           <div class="reviews">
-            <div class="reviews_title">reviews</div>
+            <div class="reviews_title">Reviews</div>
             <div class="reviews_container">
               <ul>
-                <!-- Review -->
-                <li class="review clearfix">
-                  <div class="review_image">
-                    <img src="{% static 'images/review_1.jpg' %}" alt="" />
-                  </div>
-                  <div class="review_content">
-                    <div class="review_name">
-                      <a href="#">Maria Smith</a>
+                {% for review in reviews %}
+                  <li class="review clearfix">
+                    <div class="review_image">
+                      {% if review.user.avatar %}
+                        <img src="{{ review.user.avatar.url }}" alt="{{ review.user.name }}" />
+                      {% else %}
+                        <img src="{% static 'images/reviewdefault.png' %}" alt="Default Avatar" />
+                      {% endif %}
                     </div>
-                    <div class="review_date">Nov 29, 2017</div>
-                    <div class="rating rating_4 review_rating" data-rating="4">
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
+                    <div class="review_content">
+                      <div class="review_name">
+                        <a href="">{{ review.name }}</a>
+                      </div>
+                      <div class="review_date">{{ review.created_at|date:'M d, Y' }}</div>
+                      <div class="rating rating_{{ review.stars }} review_rating" data-rating="{{ review.stars }}">
+                        {% for i in "12345" %}
+                          <i class="fa fa-star{% if i|add:'0' <= review.stars %} checked{% endif %}"></i>
+                        {% endfor %}
+                      </div>
+                      <div class="review_text">
+                        <p>{{ review.review }}</p>
+                      </div>
                     </div>
-                    <div class="review_text">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis quam ipsum. Pellentesque consequat tellus non tortor tempus, id egestas elit iaculis. Proin eu dui porta, pretium metus vitae, pharetra odio. Sed ac mi commodo, pellentesque erat eget, accumsan justo. Etiam sed placerat felis. Proin non rutrum ligula.</p>
-                    </div>
-                  </div>
-                </li>
-                <!-- Review -->
-                <li class="review clearfix">
-                  <div class="review_image">
-                    <img src="{% static 'images/review_2.jpg' %}" alt="" />
-                  </div>
-                  <div class="review_content">
-                    <div class="review_name">
-                      <a href="#">Maria Smith</a>
-                    </div>
-                    <div class="review_date">Nov 29, 2017</div>
-                    <div class="rating rating_4 review_rating" data-rating="4">
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                    </div>
-                    <div class="review_text">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis quam ipsum. Pellentesque consequat tellus non tortor tempus, id egestas elit iaculis. Proin eu dui porta, pretium metus vitae, pharetra odio. Sed ac mi commodo, pellentesque erat eget, accumsan justo. Etiam sed placerat felis. Proin non rutrum ligula.</p>
-                    </div>
-                  </div>
-                </li>
+                  </li>
+                {% empty %}
+                  <li>No reviews yet.</li>
+                {% endfor %}
               </ul>
             </div>
           </div>
@@ -165,14 +140,16 @@
           <div class="review_form_container">
             <div class="review_form_title">leave a review</div>
             <div class="review_form_content">
-              <form action="#" id="review_form" class="review_form">
+              <form action="{% url 'submit_review' product_id=product.id %}" method="post" id="review_form" class="review_form">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}" />
                 <div class="d-flex flex-md-row flex-column align-items-start justify-content-between">
-                  <input type="text" class="review_form_input" placeholder="Name" required="required" />
-                  <input type="email" class="review_form_input" placeholder="E-mail" required="required" />
-                  <input type="text" class="review_form_input" placeholder="Subject" />
+                  <input type="text" name="name" class="review_form_input" placeholder="Name" required="required" />
+                  <input type="email" name="email" class="review_form_input" placeholder="E-mail" required="required" />
+                  <input type="number" name="stars" class="review_form_input" placeholder="Stars" min="1" max="5" value="5" required />
                 </div>
-                <textarea class="review_form_text" name="review_form_text" placeholder="Message"></textarea>
-                <button type="submit" class="review_form_button">leave a review</button>
+                <textarea name="review_form_text" class="review_form_text" placeholder="Message"></textarea>
+                <button type="submit" class="review_form_button">Leave a Review</button>
               </form>
             </div>
           </div>

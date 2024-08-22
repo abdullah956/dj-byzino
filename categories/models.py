@@ -1,4 +1,5 @@
 from django.db import models
+from config import settings
 from config.models import BasedModel
 
 class Category(BasedModel):
@@ -21,3 +22,14 @@ class Product(BasedModel):
 
     def __str__(self):
         return f'{self.name} - {self.category.name}'
+
+
+class Review(BasedModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    review = models.TextField()
+    stars = models.PositiveIntegerField()
+    def __str__(self):
+        return f"Review by {self.user.email} on {self.product.name}"
