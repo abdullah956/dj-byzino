@@ -4,11 +4,17 @@ from categories.models import Category, Product, Review
 from django.db.models import Avg
 from django.core.paginator import Paginator
 
+
 def products_view(request):
     products = Product.objects.annotate(
         average_rating=Avg('review__stars')
     )
-    return render(request, 'categories/shop.html', {'products': products})
+    
+    paginator = Paginator(products, 1)
+    page_number = request.GET.get('page')
+    page_products = paginator.get_page(page_number)
+
+    return render(request, 'categories/shop.html', {'products': page_products})
 
 
 def product_detail_view(request, id):
@@ -33,8 +39,14 @@ def category_products_view(request, category_id):
     products = Product.objects.filter(category=category).annotate(
         average_rating=Avg('review__stars')
     )
-    return render(request, 'categories/category_products.html', {'category': category, 'products': products})
+    paginator = Paginator(products, 1)
+    page_number = request.GET.get('page')
+    page_products = paginator.get_page(page_number)
 
+    return render(request, 'categories/category_products.html', {
+        'category': category,
+        'products': page_products
+    })
 
 @login_required(login_url='/login/')
 def submit_review(request, product_id):

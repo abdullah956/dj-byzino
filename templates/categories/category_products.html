@@ -144,48 +144,65 @@
         </div>
       </div>
       <div class="row products_container">
-        <div class="col">
-          <!-- Products -->
-          <div class="product_grid">
+    <div class="col">
+        <!-- Products -->
+        <div class="product_grid">
             <!-- Product -->
             {% for product in products %}
-              <div class="product">
-                <div class="product_image">
-                  <img src="{{ product.image.url }}" alt="{{ product.name }}" />
-                </div>
-                <div class="rating rating_{{ product.rating }}" data-rating="{{ product.rating }}">
-                  
-                     {% for i in "12345" %}
-                           <i class="fa fa-star" style="color: {% if i|add:'0' <= product.average_rating %}gold{% else %}gray{% endif %};"></i>
-                    {% endfor %}
-                  
-                </div>
-                <div class="product_content clearfix">
-                  <div class="product_info">
-                    <div class="product_name">
-                      <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                <div class="product">
+                    <div class="product_image">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" />
                     </div>
-                    <div class="product_price">
-                      {% if product.is_on_sale %}
-                        <span class="sale_price">${{ product.sale_price }}</span>
-                        <span style="text-decoration: line-through; color: #888;">${{ product.price }}</span>
-                      {% else %}
-                        ${{ product.price }}
-                      {% endif %}
+                    <div class="rating rating_{{ product.rating }}" data-rating="{{ product.rating }}">
+                        {% for i in "12345" %}
+                            <i class="fa fa-star" style="color: {% if i|add:'0' <= product.average_rating %}gold{% else %}gray{% endif %};"></i>
+                        {% endfor %}
                     </div>
-                  </div>
-                  <div class="product_options">
-                    <div class="product_buy product_option">
-                      <img src="{% static 'images/shopping-bag-white.svg' %}" alt="" />
+                    <div class="product_content clearfix">
+                        <div class="product_info">
+                            <div class="product_name">
+                                <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                            </div>
+                            <div class="product_price">
+                                {% if product.is_on_sale %}
+                                    <span class="sale_price">${{ product.sale_price }}</span>
+                                    <span style="text-decoration: line-through; color: #888;">${{ product.price }}</span>
+                                {% else %}
+                                    ${{ product.price }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="product_options">
+                            <a href="{% url 'add_to_cart' product.id 1 %}" class="product_buy product_option">
+                                <img src="{% static 'images/shopping-bag-white.svg' %}" alt="Buy {{ product.name }}" />
+                            </a>
+                        </div>
                     </div>
-                    <div class="product_fav product_option">+</div>
-                  </div>
                 </div>
-              </div>
             {% endfor %}
-          </div>
         </div>
-      </div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination_container">
+            <ul class="pagination">
+                {% if products.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
+                {% endif %}
+                {% for num in products.paginator.page_range %}
+                    {% if products.number == num %}
+                        <li class="page-item active"><a class="page-link">{{ num }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if products.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+
     </div>
   </div>
 {% endblock %}
