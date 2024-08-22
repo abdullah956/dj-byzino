@@ -1,12 +1,13 @@
-<!-- templates/cancel.html -->
+{% extends 'base.html' %}
+{% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Payment Canceled</title>
-</head>
-<body>
+{% block title %}
+  Payment Canceled
+{% endblock %}
+
+{% block content %}
+  <div class="container pt-5 mt-5">
     <h1>Payment Canceled</h1>
-</body>
-</html>
+    <p>Your payment has been canceled. Please try again or contact support if you need assistance.</p>
+  </div>
+{% endblock %}
