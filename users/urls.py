@@ -25,6 +25,6 @@ urlpatterns = [
     #search
     path('search/', views.product_search_view, name='product_search'),
     #dashboard
-    path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('stats/', views.stats_view, name='stats'),
     path('dashboard/order/<int:order_id>/', views.order_detail_view, name='order_detail'),
 ]

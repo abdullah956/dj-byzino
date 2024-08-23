@@ -250,7 +250,7 @@ def product_search_view(request):
     })
 
 #dashboard
-def dashboard_view(request):
+def stats_view(request):
     total_subscribers = Subscriber.objects.count()
     total_orders = Order.objects.count()
     total_products = Product.objects.count()
@@ -266,7 +266,7 @@ def dashboard_view(request):
         'total_earnings': total_earnings,
         'recent_orders': page_obj,
     }
-    return render(request, 'users/dashboard.html', context)
+    return render(request, 'users/stats.html', context)
 
 
 def order_detail_view(request, order_id):
