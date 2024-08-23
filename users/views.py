@@ -1,9 +1,10 @@
 from django.http import HttpResponseBadRequest
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render ,get_object_or_404
 from django.contrib.auth import login as auth_login
 from django.core.mail import send_mail
 import pyotp
 from django.conf import settings
+from orders.models import Order
 from users.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
@@ -14,6 +15,8 @@ from users.models import ContactMessage, Subscriber
 from .forms import UserUpdateForm
 from categories.models import Product, Category, Review
 from django.db.models import Avg
+from django.db.models import Sum
+from django.core.paginator import Paginator
 
 #home
 def index(request):
@@ -245,3 +248,44 @@ def product_search_view(request):
         'products': products,
         'query': query,
     })
+
+#dashboard
+def dashboard_view(request):
+    total_subscribers = Subscriber.objects.count()
+    total_orders = Order.objects.count()
+    total_products = Product.objects.count()
+    total_earnings = Order.objects.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+    order_list = Order.objects.all().order_by('-order_date')
+    paginator = Paginator(order_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'total_subscribers': total_subscribers,
+        'total_orders': total_orders,
+        'total_products': total_products,
+        'total_earnings': total_earnings,
+        'recent_orders': page_obj,
+    }
+    return render(request, 'users/dashboard.html', context)
+
+
+def order_detail_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    product_data = order.products
+    product_ids = [item['product_id'] for item in product_data]
+    products = Product.objects.filter(id__in=product_ids)
+    products_with_quantities = []
+    for item in product_data:
+        product_id = item['product_id']
+        quantity = item['quantity']
+        product = products.filter(id=product_id).first()
+        if product:
+            products_with_quantities.append({
+                'product': product,
+                'quantity': quantity
+            })
+    context = {
+        'order': order,
+        'products_with_quantities': products_with_quantities,
+    }
+    return render(request, 'users/order_detail.html', context)
