@@ -6,7 +6,92 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container  pt-5 mt-5">
+
+<style>
+   center{
+   
+   margin: 200px 100px;
+   border: 1px solid #b5b5b5;
+   padding: 50px 50px;
+   background:#f9f5f5 ;
+   
+ }
+ center a{
+  color: #937c6f;
+ }
+ .buton{
+    background: #937c6f;
+    color: #ffffff;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    padding: 10px 20%;
+  }
+
+  .buton:hover{
+    background: #c5a999;
+    color: #000000;
+
+  }
+</style>
+<center>
+  <div class="container mt-5">
+    <header>
+      <h1>Signup</h1>
+    </header>
+    <form action="{% url 'signup' %}" method="post">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="id_email">Email address</label>
+        <input type="email" name="email" maxlength="254" autofocus required id="id_email" class="form-control" placeholder="Enter email" />
+        {% for error in form.email.errors %}
+          <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="form-group">
+        <label for="id_password1">Password</label>
+        <input type="password" name="password1" id="id_password1" class="form-control" placeholder="Password" autocomplete="off" />
+        {% for error in form.password1.errors %}
+          <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <div class="form-group">
+        <label for="id_password2">Password confirmation</label>
+        <input type="password" name="password2" id="id_password2" class="form-control" placeholder="Password" autocomplete="off" />
+        {% for error in form.password2.errors %}
+          <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <div class="form-group">
+        <ul>
+          <li>Your password can’t be too similar to your other personal information.</li>
+          <li>Your password must contain at least 8 characters.</li>
+          <li>Your password can’t be a commonly used password.</li>
+          <li>Your password can’t be entirely numeric.</li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <input type="submit" value="Signup" name="signup" class="buton" />
+      </div>
+    </form>
+    <div class="form-group">
+      <span>Already have an account? <a href="{% url 'login' %}">Login</a></span>
+    </div>
+  </div>
+
+</center>
+  <!-- <div class="container mt-5">
     <header>
       <h1>Signup</h1>
     </header>
@@ -59,5 +144,5 @@
     <div class="form-group">
       <span>Already have an account? <a href="{% url 'login' %}">Login</a></span>
     </div>
-  </div>
+  </div> -->
 {% endblock %}

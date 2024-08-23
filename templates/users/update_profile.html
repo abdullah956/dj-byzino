@@ -6,7 +6,42 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container pt-5 mt-5">
+<style>
+  center{
+   
+    margin: 200px 100px;
+    border: 1px solid #b5b5b5;
+    padding: 50px 50px;
+    background:#f9f5f5 ;
+    
+  }
+
+  center input{
+    border: 1px solid #b5b5b5;
+      padding: 7px 5px;
+      font-size: 14px;
+      outline: none;
+      
+      
+  }
+
+  .buton{
+    background: #937c6f;
+    color: #ffffff;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    padding: 10px 20%;
+  }
+
+  .buton:hover{
+    background: #c5a999;
+    color: #000000;
+
+  }
+</style>
+<center >
+  <div class="container">
     <h2>Update Profile</h2>
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
@@ -22,7 +57,11 @@
 
       <div class="form-group">{{ form.as_p }}</div>
 
-      <button type="submit" class="btn btn-primary">Update</button>
+      <button type="submit" class="buton">UPDATE</button>
     </form>
   </div>
+
+</center>
+
+
 {% endblock %}

@@ -44,7 +44,7 @@
               {% if user.is_staff %}
                 <li>
                   {% if user.is_staff %}
-                    <a href="{% url 'admin:index' %}">Admin Page</a>
+                    <a href="{% url 'admin:index' %}">Admin</a>
                   {% endif %}
                 </li>
                 <li>
@@ -93,7 +93,7 @@
                   {% url 'login' %}
                 {% endif %}">
                 <div class="avatar">
-                  <img src="{% static 'images/avatar.svg' %}" alt="" />
+                  <img src="{% static 'images/avatar.svg' %}"  title="User" />
                 </div>
               </a>
             </div>
@@ -151,7 +151,7 @@
       {% endblock %}
       <div class="newsletter">
         <div class="newsletter_content">
-          <div class="newsletter_image" style="background-image:url({% static 'images/newsletter.jpg' %})"></div>
+          <div class="newsletter_image" style="background-image:url({% static 'images/news.png' %})"></div>
           <div class="container">
             <div class="row">
               <div class="col">

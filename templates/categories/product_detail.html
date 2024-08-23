@@ -33,6 +33,17 @@
     </div>
   </div>
 
+  <style>
+    #quantity_input{
+      border: 1px solid #b5b5b5;
+      padding: 10px 5px;
+      font-size: 16px;
+      outline: none;
+    }
+
+ 
+  </style>
+
   <!-- Product -->
   <div class="product">
     <div class="container">
@@ -53,7 +64,7 @@
             <div class="product_price">
               {% if product.is_on_sale %}
                 <span class="sale_price">${{ product.sale_price }}</span>
-                <span style="text-decoration: line-through; color: #888;">${{ product.price }}</span>
+                <sub style="text-decoration: line-through; color: #888;">${{ product.price }}</sub>
               {% else %}
                 ${{ product.price }}
               {% endif %}
