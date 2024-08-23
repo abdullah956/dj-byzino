@@ -6,6 +6,9 @@ from orders.models import Order
 import stripe
 from django.conf import settings
 from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.contrib import messages
+
 
 def checkout_view(request):
     cart_items = Cart.objects.filter(user=request.user)
@@ -65,6 +68,24 @@ def checkout_process_view(request):
             products=products
         )
         order.save()
+        subject = 'Order Confirmation'
+        message = (
+            f'Thank you for your order!\n\n'
+            f'Order ID: {order.id}\n'
+            f'Amount: ${total_amount / 100:.2f}\n'
+            f'Status: {order.status}\n\n'
+            f'Billing Address:\n{billing_address}\n\n'
+            f'Shipping Address:\n{shipping_address}\n\n'
+            f'We will notify you when your order is shipped.'
+        )
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [email],
+            fail_silently=False,
+        )
+        messages.success(request, 'Your order has been placed successfully! A confirmation email has been sent to you.')
         if payment_method == 'bank_transfer':
             return redirect(f'/order/create-checkout-session/{order.id}/{total_amount}/')
         return redirect('index')
@@ -91,23 +112,67 @@ def create_checkout_session(request, order_id , amount):
             ],
             mode='payment',
             success_url=f'{YOUR_DOMAIN}/order/success/{order_id}',
-            cancel_url=f'{YOUR_DOMAIN}/order/cancel/',
+            cancel_url=f'{YOUR_DOMAIN}/order/cancel/{order_id}',
         )
         return redirect(checkout_session.url, code=303)
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
-def success_view(request,order_id):
 
+def success_view(request, order_id):
     if order_id:
         try:
             order = get_object_or_404(Order, id=order_id)
-            order.is_paid = 'True'
+            order.is_paid = True  
             order.save()
+
+            subject = 'Payment Confirmation'
+            message = (
+                f'Your payment was successful!\n\n'
+                f'Order ID: {order.id}\n'
+                f'Amount: ${order.amount / 100:.2f}\n'
+                f'Status: Paid\n\n'
+                f'Thank you for your payment. Your order is now processed and will be shipped soon.'
+            )
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [order.email],
+                fail_silently=False,
+            )
+
         except Order.DoesNotExist:
             print(f"Order with ID {order_id} does not exist")
+
     return render(request, 'orders/success.html')
 
 
-def cancel_view(request):
+def cancel_view(request,order_id):
+    order_id = request.GET.get('order_id')
+
+    if order_id:
+        try:
+            order = Order.objects.get(id=order_id)
+            email = order.email
+
+            subject = 'Order Payment Failed'
+            message = (
+                f'We are sorry to inform you that your order could not be processed due to a payment issue.\n\n'
+                f'Order ID: {order.id}\n'
+                f'Amount: ${order.amount / 100:.2f}\n'
+                f'Status: {order.status}\n\n'
+                f'Please contact our support team for further assistance or try placing your order again.'
+            )
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+            )
+        except Order.DoesNotExist:
+            messages.error(request, 'Order not found.')
+            return redirect('index')
+
     return render(request, 'orders/cancel.html')

@@ -7,5 +7,5 @@ class AdminOnlyMiddleware:
 
     def __call__(self, request):
         if request.path.startswith('/admin/') and not request.user.is_staff:
-            return redirect(reverse('login'))  # Redirect to login page or any other page
+            return redirect(reverse('login'))
         return self.get_response(request)
