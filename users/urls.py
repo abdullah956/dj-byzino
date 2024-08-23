@@ -25,12 +25,15 @@ urlpatterns = [
     #search
     path('search/', views.product_search_view, name='product_search'),
     #dashboard
-    path('stats/', views.stats_view, name='stats'),
+    path('dashboard/stats/', views.stats_view, name='stats'),
     path('dashboard/order/<int:order_id>/', views.order_detail_view, name='order_detail'),
 
-    path('messages/', views.message_list, name='message_list'),
+    path('dashboard/messages/', views.message_list, name='message_list'),
     path('messages/<int:pk>/', views.message_detail, name='message_detail'),
 
-    path('users/', views.user_list_view, name='user_list'),
-    path('export-users/', views.export_users_to_excel, name='export_users_to_excel'),
+    path('dashboard/users/', views.user_list_view, name='user_list'),
+    path('dashboard/export-users/', views.export_users_to_excel, name='export_users_to_excel'),
+
+    path('dashboard/subscribers/', views.subscriber_list, name='subscriber_list'),
+    path('dashboard/subscribers/export/', views.export_subscribers_to_excel, name='export_subscribers'),
 ]

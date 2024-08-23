@@ -37,12 +37,11 @@ def login_view(request):
         form = UserLoginForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            if user.is_verified:
+            if user.is_verified or user.is_staff:
                 auth_login(request, user)
                 messages.success(request, 'Login successful!')
                 return redirect('index')
             else:
-                messages.warning(request, 'Your account is not verified. Please check your email for the verification link.')
                 request.POST = {'email': user.email}
                 return send_otp_view(request)
         else:
@@ -348,4 +347,29 @@ def export_users_to_excel(request):
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
     response['Content-Disposition'] = 'attachment; filename="users_emails.xlsx"'
+    return response
+
+
+def subscriber_list(request):
+    subscribers = Subscriber.objects.all()
+    paginator = Paginator(subscribers, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    print(subscribers)
+    return render(request, 'users/subscriber_list.html', {'subscribers': page_obj})
+
+def export_subscribers_to_excel(request):
+    subscribers = Subscriber.objects.all()
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = 'Subscribers'
+    headers = ['Email']
+    worksheet.append(headers)
+    for subscriber in subscribers:
+        worksheet.append([
+            subscriber.email,
+        ])
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=subscribers.xlsx'
+    workbook.save(response)
     return response
