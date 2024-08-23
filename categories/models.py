@@ -1,6 +1,8 @@
 from django.db import models
 from config import settings
 from config.models import BasedModel
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 class Category(BasedModel):
     name = models.CharField(max_length=255) 
@@ -8,7 +10,14 @@ class Category(BasedModel):
 
     def __str__(self):
         return self.name
+    
+    def delete(self, *args, **kwargs):
+        self.image.delete()
+        super().delete(*args, **kwargs)
 
+@receiver(post_delete, sender=Category)
+def delete_image_file(sender, instance, **kwargs):
+    instance.image.delete(False)
 
 class Product(BasedModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
@@ -23,7 +32,14 @@ class Product(BasedModel):
 
     def __str__(self):
         return f'{self.name} - {self.category.name}'
+    
+    def delete(self, *args, **kwargs):
+        self.image.delete()
+        super().delete(*args, **kwargs)
 
+@receiver(post_delete, sender=Product)
+def delete_image_file(sender, instance, **kwargs):
+    instance.image.delete(False)
 
 class Review(BasedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

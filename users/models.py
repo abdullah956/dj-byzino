@@ -1,9 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import FileExtensionValidator
-from config import settings
 from config.models import BasedModel
 from .managers import UserManager
+from django.db.models.signals import post_delete ,  pre_save
+from django.dispatch import receiver
 
 
 class User(AbstractUser, BasedModel):
@@ -21,6 +22,30 @@ class User(AbstractUser, BasedModel):
     objects = UserManager()
     def __str__(self):
         return self.email
+    
+    
+    def delete(self, *args, **kwargs):
+        self.image.delete()
+        super().delete(*args, **kwargs)
+
+@receiver(post_delete, sender=User)
+def delete_image_file(sender, instance, **kwargs):
+    instance.avatar.delete(False)
+
+@receiver(pre_save, sender=User)
+def delete_old_avatar(sender, instance, **kwargs):
+    if not instance.pk:
+        return False
+
+    try:
+        old_avatar = sender.objects.get(pk=instance.pk).avatar
+    except sender.DoesNotExist:
+        return False
+
+    new_avatar = instance.avatar
+    if not old_avatar == new_avatar:
+        if old_avatar:
+            old_avatar.delete(False)
 
 
 class Subscriber(BasedModel):

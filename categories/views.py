@@ -10,7 +10,7 @@ def products_view(request):
         average_rating=Avg('review__stars')
     )
     
-    paginator = Paginator(products, 1)
+    paginator = Paginator(products, 9)
     page_number = request.GET.get('page')
     page_products = paginator.get_page(page_number)
 
@@ -39,7 +39,7 @@ def category_products_view(request, category_id):
     products = Product.objects.filter(category=category).annotate(
         average_rating=Avg('review__stars')
     )
-    paginator = Paginator(products, 1)
+    paginator = Paginator(products, 9)
     page_number = request.GET.get('page')
     page_products = paginator.get_page(page_number)
 
