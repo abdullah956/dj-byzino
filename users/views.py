@@ -250,7 +250,7 @@ def stats_view(request):
     total_subscribers = Subscriber.objects.count()
     total_orders = Order.objects.count()
     total_products = Product.objects.count()
-    total_earnings = Order.objects.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+    total_earnings = Order.objects.filter(status='delivered').aggregate(total_amount=Sum('amount'))['total_amount'] or 0
     order_list = Order.objects.all().order_by('-order_date')
     paginator = Paginator(order_list, 10)
     page_number = request.GET.get('page')
@@ -373,3 +373,55 @@ def export_subscribers_to_excel(request):
     response['Content-Disposition'] = 'attachment; filename=subscribers.xlsx'
     workbook.save(response)
     return response
+
+
+def manage_orders(request):
+    if not request.user.is_staff:
+        return redirect('login')
+
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        order = Order.objects.get(id=order_id)
+
+        new_status = request.POST.get('status')
+        if new_status != order.status:
+            order.status = new_status
+            order.save()
+
+            if new_status == 'canceled':
+                send_mail(
+                    'Order Canceled',
+                    f'Your order #{order.id} has been canceled.',
+                    settings.DEFAULT_FROM_EMAIL,
+                    [order.user.email],
+                )
+            elif new_status == 'delivered':
+                send_mail(
+                    'Order Delivered',
+                    f'Your order #{order.id} has been delivered.',
+                    settings.DEFAULT_FROM_EMAIL,
+                    [order.user.email],
+                )
+
+        new_is_shipped = 'is_shipped' in request.POST
+        if new_is_shipped != order.is_shipped:
+            order.is_shipped = new_is_shipped
+            order.save()
+
+            if new_is_shipped:
+                send_mail(
+                    'Order Shipped',
+                    f'Your order #{order.id} has been shipped.',
+                    settings.DEFAULT_FROM_EMAIL,
+                    [order.user.email],
+                )
+
+        order.is_paid = 'is_paid' in request.POST
+        order.save()
+
+    orders = Order.objects.all().order_by('-order_date')
+    paginator = Paginator(orders, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'users/manage_orders.html', {'orders': page_obj})
