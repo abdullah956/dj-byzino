@@ -27,4 +27,7 @@ urlpatterns = [
     #dashboard
     path('stats/', views.stats_view, name='stats'),
     path('dashboard/order/<int:order_id>/', views.order_detail_view, name='order_detail'),
+    path('messages/', views.message_list, name='message_list'),
+    path('messages/<int:pk>/', views.message_detail, name='message_detail'),
+    path('messages/<int:pk>/reply/', views.reply_message, name='reply_message'),
 ]

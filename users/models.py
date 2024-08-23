@@ -60,6 +60,7 @@ class ContactMessage(BasedModel):
     email = models.EmailField()
     subject = models.CharField(max_length=255, blank=True, null=True)
     message = models.TextField()
+    is_read = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Message from {self.email}"

@@ -289,3 +289,24 @@ def order_detail_view(request, order_id):
         'products_with_quantities': products_with_quantities,
     }
     return render(request, 'users/order_detail.html', context)
+
+
+
+def message_list(request):
+    messages = ContactMessage.objects.all().order_by('-created_at')
+    paginator = Paginator(messages, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'users/message_list.html', {'page_obj': page_obj})
+
+def message_detail(request, pk):
+    message = get_object_or_404(ContactMessage, pk=pk)
+    if not message.is_read:
+        message.is_read = True
+        message.save()
+
+    return render(request, 'users/message_detail.html', {'message': message})
+
+def reply_message(request, pk):
+    pass
