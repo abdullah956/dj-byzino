@@ -86,6 +86,7 @@ def checkout_process_view(request):
             fail_silently=False,
         )
         messages.success(request, 'Your order has been placed successfully! A confirmation email has been sent to you.')
+        Cart.objects.filter(user=request.user).delete()
         if payment_method == 'bank_transfer':
             return redirect(f'/order/create-checkout-session/{order.id}/{total_amount}/')
         return redirect('index')

@@ -1,22 +1,21 @@
-from django.http import HttpResponseBadRequest
-from django.shortcuts import redirect, render ,get_object_or_404
-from django.contrib.auth import login as auth_login
-from django.core.mail import send_mail
-import pyotp
-from django.conf import settings
-from orders.models import Order
-from users.forms import UserLoginForm, UserRegistrationForm
-from django.contrib.auth import get_user_model
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth import logout
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth import login as auth_login, update_session_auth_hash, logout,get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from users.models import ContactMessage, Subscriber
-from .forms import UserUpdateForm
-from categories.models import Product, Category, Review
-from django.db.models import Avg
-from django.db.models import Sum
+from django.core.mail import send_mail
+from django.conf import settings
+from django.db.models import Avg, Sum
 from django.core.paginator import Paginator
+from users.forms import UserLoginForm, UserRegistrationForm, UserUpdateForm
+from users.models import ContactMessage, Subscriber
+from categories.models import Product, Category, Review
+from orders.models import Order
+import pyotp
+from io import BytesIO
+from openpyxl import Workbook
+import openpyxl
+
 
 #home
 def index(request):
@@ -24,8 +23,6 @@ def index(request):
     featured_products = Product.objects.filter(is_featured=True).annotate(
         average_rating=Avg('review__stars')
     )
-
-    # Fetch the first 5 five-star reviews from the Review table
     five_star_reviews = Review.objects.filter(stars=5).select_related('product')[:5]
 
     return render(request, 'index.html', {
@@ -308,5 +305,47 @@ def message_detail(request, pk):
 
     return render(request, 'users/message_detail.html', {'message': message})
 
-def reply_message(request, pk):
-    pass
+
+User = get_user_model()
+def user_list_view(request):
+    users = User.objects.all()
+    paginator = Paginator(users, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    if request.GET.get('export') == 'excel':
+        email_list = [user.email for user in users]
+        wb = Workbook()
+        ws = wb.active
+        ws.title = 'Users'
+        ws.append(['Email'])
+        for email in email_list:
+            ws.append([email])
+        
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=emails.xlsx'
+        stream = BytesIO()
+        wb.save(stream)
+        response.write(stream.getvalue())
+        return response
+
+    return render(request, 'users/user_list.html', {'page_obj': page_obj})
+
+def export_users_to_excel(request):
+    users = User.objects.all()
+    email_list = [user.email for user in users]
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = 'Users'
+    ws.append(['Email'])
+    for email in email_list:
+        ws.append([email])
+    stream = BytesIO()
+    wb.save(stream)
+    stream.seek(0)
+    response = HttpResponse(
+        stream.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename="users_emails.xlsx"'
+    return response
