@@ -140,7 +140,14 @@
                   <div class="product_name">
                     <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
                   </div>
-                  <div class="product_price">${{ product.price }}</div>
+                   <div class="product_price">
+            {% if product.is_on_sale %}
+                <span class="sale_price">${{ product.sale_price }}</span>
+                <sub style="text-decoration: line-through; color: #b1b1b1;">${{ product.price }}</sub>
+            {% else %}
+                ${{ product.price }}
+            {% endif %}
+                   </div>
                 </div>
                 <div class="product_options">
                   <a href="{% url 'add_to_cart' product.id 1 %}" class="product_buy product_option"><img src="{% static 'images/shopping-bag-white.svg' %}" alt="Buy {{ product.name }}" /></a>
