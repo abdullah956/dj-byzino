@@ -41,29 +41,19 @@
               <li>
                 <a href="{% url 'contact' %}">contact</a>
               </li>
-              {% comment %} {% if user.is_staff %}
-                <li>
-                  {% if user.is_staff %}
-                    <a href="{% url 'admin:index' %}">Admin</a>
-                  {% endif %}
-                </li>
-                <li>
-                  {% if user.is_staff %}
-                    <a href="{% url 'stats' %}">Dashboard</a>
-                  {% endif %}
-                </li>
-              {% endif %} {% endcomment %}
-
+              <li>
+                <a href="{% url 'blog_list' %}">blogs</a>
+              </li>
               {% if user.is_authenticated %}
                 <li>
-                  <a href="{% url 'logout' %}">Logout</a>
+                  <a href="{% url 'logout' %}">logout</a>
                 </li>
               {% else %}
                 <li>
-                  <a href="{% url 'login' %}">Login</a>
+                  <a href="{% url 'login' %}">login</a>
                 </li>
                 <li>
-                  <a href="{% url 'signup' %}">Signup</a>
+                  <a href="{% url 'signup' %}">signup</a>
                 </li>
               {% endif %}
             </ul>
