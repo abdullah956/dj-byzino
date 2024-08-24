@@ -9,6 +9,7 @@ urlpatterns = [
     path('category/', include('categories.urls')),
     path('cart/', include('cart.urls')), 
     path('order/', include('orders.urls')), 
+    path('dashboard/', include('dashboard.urls')), 
 ]
 
 if settings.DEBUG:
