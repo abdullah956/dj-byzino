@@ -12,6 +12,11 @@ from django.contrib import messages
 
 def checkout_view(request):
     cart_items = Cart.objects.filter(user=request.user)
+    
+    if not cart_items.exists():
+        messages.info(request, "Your cart is empty. Please add items to your cart before proceeding.")
+        return redirect('view_cart')
+
     for item in cart_items:
         product = item.product
         if product.is_on_sale:
@@ -19,15 +24,18 @@ def checkout_view(request):
         else:
             item_price = product.price
         item.total_price = Decimal(item_price) * item.quantity
+    
     subtotal = sum(item.total_price for item in cart_items)
     shipping_cost = Decimal('5.00')
     total = subtotal + shipping_cost
+    
     context = {
         'cart_items': cart_items,
         'subtotal': subtotal,
         'shipping_cost': shipping_cost,
         'total': total
     }
+    
     return render(request, 'orders/checkout.html', context)
 
 def checkout_process_view(request):
