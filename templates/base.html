@@ -41,7 +41,7 @@
               <li>
                 <a href="{% url 'contact' %}">contact</a>
               </li>
-              {% if user.is_staff %}
+              {% comment %} {% if user.is_staff %}
                 <li>
                   {% if user.is_staff %}
                     <a href="{% url 'admin:index' %}">Admin</a>
@@ -52,16 +52,19 @@
                     <a href="{% url 'stats' %}">Dashboard</a>
                   {% endif %}
                 </li>
-              {% endif %}
+              {% endif %} {% endcomment %}
 
               {% if user.is_authenticated %}
                 <li>
                   <a href="{% url 'logout' %}">Logout</a>
                 </li>
-                <li></li>
               {% else %}
-                <li></li>
-                <li></li>
+                <li>
+                  <a href="{% url 'login' %}">Login</a>
+                </li>
+                <li>
+                  <a href="{% url 'signup' %}">Signup</a>
+                </li>
               {% endif %}
             </ul>
           </nav>
@@ -93,7 +96,7 @@
                   {% url 'login' %}
                 {% endif %}">
                 <div class="avatar">
-                  <img src="{% static 'images/avatar.svg' %}"  title="User" />
+                  <img src="{% static 'images/avatar.svg' %}" title="User" />
                 </div>
               </a>
             </div>
@@ -135,14 +138,38 @@
         <nav class="menu_nav">
           <ul class="menu_mm">
             <li>
-              <a href="">home</a>
+              <a href="{% url 'index' %}">home</a>
             </li>
             <li>
-              <a href="">shop</a>
+              <a href="{% url 'products' %}">shop</a>
             </li>
             <li>
-              <a href="">contact</a>
+              <a href="{% url 'contact' %}">contact</a>
             </li>
+            {% if user.is_staff %}
+              <li>
+                {% if user.is_staff %}
+                  <a href="{% url 'admin:index' %}">Admin</a>
+                {% endif %}
+              </li>
+              <li>
+                {% if user.is_staff %}
+                  <a href="{% url 'stats' %}">Dashboard</a>
+                {% endif %}
+              </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+              <li>
+                <a href="{% url 'logout' %}">Logout</a>
+              </li>
+            {% else %}
+              <li>
+                <a href="{% url 'login' %}">Login</a>
+              </li>
+              <li>
+                <a href="{% url 'signup' %}">Signup</a>
+              </li>
+            {% endif %}
           </ul>
         </nav>
       </div>
