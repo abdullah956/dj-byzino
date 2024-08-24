@@ -1,62 +1,52 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Messages</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  </head>
-  <body>
-    <div class="container mt-4">
-      <h1>Messages</h1>
-      <table class="table table-striped">
+{% extends 'base.html' %}
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+    <h1>Messages</h1>
+    <table class="table table-striped">
         <thead>
-          <tr>
-            <th>Email</th>
-            <th>View Message</th>
-            <th>Reply</th>
-          </tr>
+            <tr>
+                <th>Email</th>
+                <th>View Message</th>
+                <th>Reply</th>
+            </tr>
         </thead>
         <tbody>
-          {% for message in page_obj %}
-            <tr>
-              <td>{{ message.email }}</td>
-              <td>
-                <a href="{% url 'message_detail' message.id %}" class="btn btn-info">
-                  {% if not message.is_read %}
-                    <span class="badge bg-danger">•</span>
-                  {% endif %}View
-                </a>
-              </td>
-              <td>
-                <a href="mailto:{{ message.email }}" class="btn btn-primary">Reply</a>
-              </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="3">No messages found.</td>
-            </tr>
-          {% endfor %}
+            {% for message in page_obj %}
+                <tr>
+                    <td>{{ message.email }}</td>
+                    <td>
+                        <a href="{% url 'message_detail' message.id %}" class="btn btn-info">
+                            {% if not message.is_read %}
+                                <span class="badge bg-danger">•</span>
+                            {% endif %}View
+                        </a>
+                    </td>
+                    <td>
+                        <a href="mailto:{{ message.email }}" class="btn btn-primary">Reply</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No messages found.</td>
+                </tr>
+            {% endfor %}
         </tbody>
-      </table>
+    </table>
 
-      <div class="pagination">
+    <div class="pagination">
         <span class="step-links">
-          {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-          {% endif %}
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
 
-          <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+            <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
 
-          {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-          {% endif %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
         </span>
-      </div>
     </div>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-  </body>
-</html>
+{% endblock %}

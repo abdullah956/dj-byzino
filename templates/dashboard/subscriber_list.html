@@ -1,49 +1,42 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User List</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  </head>
-  <body>
-    <div class="container">
-      <h2>Subscribers</h2>
-      <a href="{% url 'export_subscribers' %}" class="btn btn-primary">Export to Excel</a>
+{% block title %}
+  Subscribers
+{% endblock %}
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for subscriber in subscribers %}
-            <tr>
-              <td>{{ subscriber.email }}</td>
-              <td>{{ subscriber.is_subscribed|yesno:'Subscribed,Not Subscribed' }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+{% block content %}
+  <h2>Subscribers</h2>
 
-      <div class="pagination">
-        <span class="step-links">
-          {% if subscribers.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ subscribers.previous_page_number }}">previous</a>
-          {% endif %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for subscriber in subscribers %}
+        <tr>
+          <td>{{ subscriber.email }}</td>
+          <td>{{ subscriber.is_subscribed|yesno:'Subscribed,Not Subscribed' }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+<a href="{% url 'export_subscribers' %}" class="btn btn-primary mb-4">Export to Excel</a>
+  <div class="pagination">
+    <span class="step-links">
+      {% if subscribers.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ subscribers.previous_page_number }}">previous</a>
+      {% endif %}
 
-          <span class="current">Page {{ subscribers.number }} of {{ subscribers.paginator.num_pages }}.</span>
+      <span class="current">Page {{ subscribers.number }} of {{ subscribers.paginator.num_pages }}.</span>
 
-          {% if subscribers.has_next %}
-            <a href="?page={{ subscribers.next_page_number }}">next</a>
-            <a href="?page={{ subscribers.paginator.num_pages }}">last &raquo;</a>
-          {% endif %}
-        </span>
-      </div>
-    </div>
-  </body>
-</html>
+      {% if subscribers.has_next %}
+        <a href="?page={{ subscribers.next_page_number }}">next</a>
+        <a href="?page={{ subscribers.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+    </span>
+  </div>
+{% endblock %}
