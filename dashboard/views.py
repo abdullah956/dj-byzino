@@ -11,6 +11,7 @@ from categories.models import Product
 from orders.models import Order
 from users.models import ContactMessage, Subscriber
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 
 #dashboard
 def stats_view(request):
@@ -167,6 +168,7 @@ def manage_orders(request):
                     settings.DEFAULT_FROM_EMAIL,
                     [order.user.email],
                 )
+                messages.success(request, f'Order #{order.id} status updated to "Canceled".')
             elif new_status == 'delivered':
                 send_mail(
                     'Order Delivered',
@@ -174,6 +176,7 @@ def manage_orders(request):
                     settings.DEFAULT_FROM_EMAIL,
                     [order.user.email],
                 )
+                messages.success(request, f'Order #{order.id} status updated to "Delivered".')
 
         new_is_shipped = 'is_shipped' in request.POST
         if new_is_shipped != order.is_shipped:
@@ -187,9 +190,17 @@ def manage_orders(request):
                     settings.DEFAULT_FROM_EMAIL,
                     [order.user.email],
                 )
+                messages.success(request, f'Order #{order.id} marked as shipped.')
 
-        order.is_paid = 'is_paid' in request.POST
-        order.save()
+        new_is_paid = 'is_paid' in request.POST
+        if new_is_paid != order.is_paid:
+            order.is_paid = new_is_paid
+            order.save()
+
+            if new_is_paid:
+                messages.success(request, f'Order #{order.id} marked as paid.')
+            else:
+                messages.success(request, f'Order #{order.id} marked as unpaid.')
 
     orders = Order.objects.all().order_by('-order_date')
     paginator = Paginator(orders, 10)
