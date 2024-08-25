@@ -9,8 +9,30 @@
   <link rel="stylesheet" type="text/css" href="{% static 'styles/categories_responsive.css' %}" />
 {% endblock %}
 {% block content %}
-  <h1>Search Results for "{{ query }}"</h1>
-  <div class="row products_container">
+
+<style>
+  section{
+   margin: 130px 0px;
+   /* border: 1px solid #b5b5b5; */
+   padding: 50px 50px;
+   background:#f9f5f5 ;
+   
+ }
+ @media only screen and (max-width: 450px)
+            {
+                  section{
+   
+    margin: 100px 0px;
+    /* border: 1px solid #b5b5b5; */
+    padding: 5px 5px;
+    /* background:#f9f5f5 ; */
+    
+  }}
+</style>
+
+<section>
+  <p class="mt-5">Search Results for "{{ query }}"</p>
+  <div class="row products_container ">
     <div class="col">
       <!-- Products -->
       <div class="product_grid">
@@ -57,4 +79,7 @@
       </div>
     </div>
   </div>
+
+</section>
+  
 {% endblock %}
