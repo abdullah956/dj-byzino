@@ -2,42 +2,68 @@
 {% block title %}Manage Orders{% endblock %}
 
 {% block content %}
+
+<style>
+     section{
+   margin: 200px 100px;
+   border: 1px solid #b5b5b5;
+   padding: 50px 50px;
+   background:#f9f5f5 ;
+   
+ }
+
+ @media only screen and (max-width: 450px)
+            {
+                  section{
+   
+    margin: 200px 10px;
+    border: 1px solid #b5b5b5;
+    padding: 5px 5px;
+    background:#f9f5f5 ;
+    
+  }}
+</style>
+<section>
     <h2>Manage Orders</h2>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Email</th>
-                <th>Is Shipped</th>
-                <th>Is Paid</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <form method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="order_id" value="{{ order.id }}">
-                        <td><a href="{% url 'order_detail' order.id %}">{{ order.id }}</a></td>
-                        <td>{{ order.user.email }}</td>
-                        <td><input type="checkbox" name="is_shipped" {% if order.is_shipped %}checked{% endif %}></td>
-                        <td><input type="checkbox" name="is_paid" {% if order.is_paid %}checked{% endif %}></td>
-                        <td>
-                            <select name="status" class="form-control">
-                                <option value="placed" {% if order.status == 'placed' %}selected{% endif %}>Placed</option>
-                                <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>Delivered</option>
-                                <option value="canceled" {% if order.status == 'canceled' %}selected{% endif %}>Canceled</option>
-                            </select>
-                        </td>
-                        <td><button type="submit" class="btn btn-primary">Update</button></td>
-                    </form>
+                    <th>Order ID</th>
+                    <th>Email</th>
+                    <th>Is Shipped</th>
+                    <th>Is Paid</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                            <td><a class="btn btn-dark btn-sm" href="{% url 'order_detail' order.id %}">View Order</a></td>
+                            <td>{{ order.user.email }}</td>
+                            <td><input type="checkbox" name="is_shipped" {% if order.is_shipped %}checked{% endif %}></td>
+                            <td><input type="checkbox" name="is_paid" {% if order.is_paid %}checked{% endif %}></td>
+                            <td>
+                                <select name="status" class="form-control">
+                                    <option value="placed" {% if order.status == 'placed' %}selected{% endif %}>Placed</option>
+                                    <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>Delivered</option>
+                                    <option value="canceled" {% if order.status == 'canceled' %}selected{% endif %}>Canceled</option>
+                                </select>
+                            </td>
+                            <td><button type="submit" class="btn btn-primary">Update</button></td>
+                        </form>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
 
     <div class="pagination">
         <span class="step-links">
@@ -54,4 +80,7 @@
             {% endif %}
         </span>
     </div>
+
+</section>
+    
 {% endblock %}

@@ -2,6 +2,30 @@
 {% block title %}Message Details{% endblock %}
 
 {% block content %}
+
+
+<style>
+    section{
+   margin: 200px 100px;
+   border: 1px solid #b5b5b5;
+   padding: 50px 50px;
+   background:#f9f5f5 ;
+   
+ }
+
+ @media only screen and (max-width: 450px)
+            {
+                  section{
+   
+    margin: 200px 10px;
+    border: 1px solid #b5b5b5;
+    padding: 5px 5px;
+    background:#f9f5f5 ;
+    
+  }}
+</style>
+<section>
+
     <h1>Message Details</h1>
     <div class="card mb-4">
         <div class="card-body">
@@ -12,5 +36,8 @@
         </div>
     </div>
 
-    <a href="{% url 'message_list' %}" class="btn btn-primary mt-4">Back to Messages</a>
+    <a href="{% url 'message_list' %}" class="btn btn-dark mt-4">Back to Messages</a>
+
+</section>
+   
 {% endblock %}

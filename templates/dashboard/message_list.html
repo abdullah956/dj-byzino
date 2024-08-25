@@ -2,6 +2,36 @@
 {% block title %}Messages{% endblock %}
 
 {% block content %}
+
+<style>
+    section{
+   margin: 200px 100px;
+   border: 1px solid #b5b5b5;
+   padding: 50px 50px;
+   background:#f9f5f5 ;
+   
+ }
+
+
+ 
+
+
+    
+   
+
+         @media only screen and (max-width: 450px)
+            {
+                  section{
+   
+    margin: 200px 10px;
+    border: 1px solid #b5b5b5;
+    padding: 5px 5px;
+    background:#f9f5f5 ;
+    
+  }}
+</style>
+<section>
+
     <h1>Messages</h1>
     <table class="table table-striped">
         <thead>
@@ -15,15 +45,20 @@
             {% for message in page_obj %}
                 <tr>
                     <td>{{ message.email }}</td>
+                    
                     <td>
-                        <a href="{% url 'message_detail' message.id %}" class="btn btn-info">
+                        <a href="{% url 'message_detail' message.id %}" class="btn btn-info btn-sm position-relative">
                             {% if not message.is_read %}
-                                <span class="badge bg-danger">•</span>
-                            {% endif %}View
+                                <span class="badge bg-danger position-absolute" style="top: 0; right: 0; transform: translate(50%, -50%);">
+                                    •
+                                </span>
+                            {% endif %}
+                            View
                         </a>
                     </td>
+                    
                     <td>
-                        <a href="mailto:{{ message.email }}" class="btn btn-primary">Reply</a>
+                        <a href="mailto:{{ message.email }}" class="btn btn-primary btn-sm">Reply</a>
                     </td>
                 </tr>
             {% empty %}
@@ -49,4 +84,6 @@
             {% endif %}
         </span>
     </div>
+</section>
+  
 {% endblock %}

@@ -34,6 +34,29 @@
     </div>
   </div>
 
+  <style>
+    .sidebar_section {
+      width: 100%; /* Ensures that the sidebar takes full width */
+    }
+  
+    .sidebar_section_content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px; /* Adjust the gap as needed */
+    }
+  
+    .sidebar_option {
+      flex: 1 1 200px; /* Each option will try to take up equal space but not less than 200px */
+      display: flex;
+      align-items: center; /* Vertically centers the content in each option */
+    }
+  
+    .option_image img {
+      max-width: 100%; /* Ensures images are fully responsive within their containers */
+    }
+  </style>
+  
+
   <!-- Products -->
 
   <div class="products">
@@ -43,120 +66,56 @@
           <!-- Sidebar Left -->
 
           <div class="sidebar_left clearfix">
-            <!-- Best Sellers -->
-
-            <div class="sidebar_section">
-              <div class="sidebar_title">Best Sellers</div>
-              <div class="sidebar_section_content bestsellers_content">
-                <ul>
-                  <!-- Best Seller Item -->
-                  <li class="clearfix">
-                    <div class="best_image">
-                      <img src="{% static 'images/best_1.jpg' %}" alt="" />
-                    </div>
-                    <div class="best_content">
-                      <div class="best_title">
-                        <a href="">Blue dress with dots</a>
-                      </div>
-                      <div class="best_price">$45</div>
-                    </div>
-                    <div class="best_buy">+</div>
-                  </li>
-
-                  <!-- Best Seller Item -->
-                  <li class="clearfix">
-                    <div class="best_image">
-                      <img src="{% static 'images/best_2.jpg' %}" alt="" />
-                    </div>
-                    <div class="best_content">
-                      <div class="best_title">
-                        <a href="">White t-shirt</a>
-                      </div>
-                      <div class="best_price">$45</div>
-                    </div>
-                    <div class="best_buy">+</div>
-                  </li>
-
-                  <!-- Best Seller Item -->
-                  <li class="clearfix">
-                    <div class="best_image">
-                      <img src="{% static 'images/best_3.jpg' %}" alt="" />
-                    </div>
-                    <div class="best_content">
-                      <div class="best_title">
-                        <a href="">Blue dress with dots</a>
-                      </div>
-                      <div class="best_price">$45</div>
-                    </div>
-                    <div class="best_buy">+</div>
-                  </li>
-
-                  <!-- Best Seller Item -->
-                  <li class="clearfix">
-                    <div class="best_image">
-                      <img src="{% static 'images/best_4.jpg' %}" alt="" />
-                    </div>
-                    <div class="best_content">
-                      <div class="best_title">
-                        <a href="">White t-shirt</a>
-                      </div>
-                      <div class="best_price">$45</div>
-                    </div>
-                    <div class="best_buy">+</div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
             <!-- Size -->
             <div class="sidebar_section sidebar_options">
-              <div class="sidebar_section_content">
-                <!-- Option Item -->
-                <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
-                  <div class="option_image">
-                    <img src="{% static 'images/option_1.png' %}" alt="" />
-                  </div>
-                  <div class="option_content">
-                    <div class="option_title">30 Days Returns</div>
-                    <div class="option_subtitle">No questions asked</div>
-                  </div>
+                <div class="sidebar_section_content">
+                    <!-- Option Item -->
+                    <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
+                        <div class="option_image">
+                            <img src="{% static 'images/option_1.png' %}" alt="" />
+                        </div>
+                        <div class="option_content">
+                            <div class="option_title">30 Days Returns</div>
+                            <div class="option_subtitle">No questions asked</div>
+                        </div>
+                    </div>
+        
+                    <!-- Option Item -->
+                    <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
+                        <div class="option_image">
+                            <img src="{% static 'images/option_2.png' %}" alt="" />
+                        </div>
+                        <div class="option_content">
+                            <div class="option_title">Free Delivery</div>
+                            <div class="option_subtitle">On all orders</div>
+                        </div>
+                    </div>
+        
+                    <!-- Option Item -->
+                    <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
+                        <div class="option_image">
+                            <img src="{% static 'images/option_3.png' %}" alt="" />
+                        </div>
+                        <div class="option_content">
+                            <div class="option_title">Secure Payments</div>
+                            <div class="option_subtitle">No need to worry</div>
+                        </div>
+                    </div>
+        
+                    <!-- Option Item -->
+                    <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
+                        <div class="option_image">
+                            <img src="{% static 'images/option_4.png' %}" alt="" />
+                        </div>
+                        <div class="option_content">
+                            <div class="option_title">24/7 Support</div>
+                            <div class="option_subtitle">Just call us</div>
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Option Item -->
-                <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
-                  <div class="option_image">
-                    <img src="{% static 'images/option_2.png' %}" alt="" />
-                  </div>
-                  <div class="option_content">
-                    <div class="option_title">Free Delivery</div>
-                    <div class="option_subtitle">On all orders</div>
-                  </div>
-                </div>
-
-                <!-- Option Item -->
-                <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
-                  <div class="option_image">
-                    <img src="{% static 'images/option_3.png' %}" alt="" />
-                  </div>
-                  <div class="option_content">
-                    <div class="option_title">Secure Payments</div>
-                    <div class="option_subtitle">No need to worry</div>
-                  </div>
-                </div>
-
-                <!-- Option Item -->
-                <div class="sidebar_option d-flex flex-row align-items-center justify-content-start">
-                  <div class="option_image">
-                    <img src="{% static 'images/option_4.png' %}" alt="" />
-                  </div>
-                  <div class="option_content">
-                    <div class="option_title">24/7 Support</div>
-                    <div class="option_subtitle">Just call us</div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
+        </div>
+        
 
           <div class="current_page">Our Products</div>
         </div>

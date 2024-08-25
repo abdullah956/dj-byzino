@@ -2,7 +2,29 @@
 {% block title %}Order Details{% endblock %}
 
 {% block content %}
-    <h1>Order Details</h1>
+
+<style>
+    section{
+   margin: 200px 100px;
+   border: 1px solid #b5b5b5;
+   padding: 50px 50px;
+   background:#f9f5f5 ;
+   
+ }
+
+ @media only screen and (max-width: 450px)
+            {
+                  section{
+   
+    margin: 200px 10px;
+    border: 1px solid #b5b5b5;
+    padding: 5px 5px;
+    background:#f9f5f5 ;
+    
+  }}
+</style>
+<section>
+  <h1>Order Details</h1>
 
     <div id="contract-detail" class="card mb-4">
         <div class="card-body">
@@ -49,8 +71,11 @@
             </table>
         </div>
     </div>
-    <a href="{% url 'stats' %}" class="btn btn-secondary">Back to Dashboard</a>
-    <button id="download-pdf" class="btn btn-secondary mt-4">Download PDF</button>
+    <a href="{% url 'stats' %}" class="btn btn-secondary btn-sm mt-1">Back to Dashboard</a>
+    <button id="download-pdf" class="btn btn-secondary btn-sm mt-1">Download PDF</button>
+
+</section>
+    
 {% endblock %}
 
 {% block extra_js %}
