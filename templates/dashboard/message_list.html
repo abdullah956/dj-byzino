@@ -68,7 +68,7 @@
             {% endfor %}
         </tbody>
     </table>
-
+<a href="{% url 'stats' %}" class="btn btn-secondary btn-sm mt-1">Back to Dashboard</a>
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
@@ -85,5 +85,5 @@
         </span>
     </div>
 </section>
-  
+
 {% endblock %}

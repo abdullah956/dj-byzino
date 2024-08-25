@@ -5,63 +5,57 @@
 {% endblock %}
 
 {% block content %}
-
-<style>
-   section{
-   margin: 200px 100px;
-   border: 1px solid #b5b5b5;
-   padding: 50px 50px;
-   background:#f9f5f5 ;
-   
- }
-
- @media only screen and (max-width: 450px)
-            {
-                  section{
-   
-    margin: 200px 10px;
-    border: 1px solid #b5b5b5;
-    padding: 5px 5px;
-    background:#f9f5f5 ;
+  <style>
+    section {
+      margin: 200px 100px;
+      border: 1px solid #b5b5b5;
+      padding: 50px 50px;
+      background: #f9f5f5;
+    }
     
-  }}
-</style>
-<section>
-  <h2>Subscribers</h2>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for subscriber in subscribers %}
+    @media only screen and (max-width: 450px) {
+      section {
+        margin: 200px 10px;
+        border: 1px solid #b5b5b5;
+        padding: 5px 5px;
+        background: #f9f5f5;
+      }
+    }
+  </style>
+  <section>
+    <h2>Subscribers</h2>
+    <a href="{% url 'export_subscribers' %}" class="btn btn-dark btn-sm mb-4">Export to Excel</a>
+    <table class="table">
+      <thead>
         <tr>
-          <td>{{ subscriber.email }}</td>
-          <td>{{ subscriber.is_subscribed|yesno:'Subscribed,Not Subscribed' }}</td>
+          <th>Email</th>
+          <th>Status</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-<a href="{% url 'export_subscribers' %}" class="btn btn-dark btn-sm mb-4">Export to Excel</a>
-  <div class="pagination">
-    <span class="step-links">
-      {% if subscribers.has_previous %}
-        <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ subscribers.previous_page_number }}">previous</a>
-      {% endif %}
+      </thead>
+      <tbody>
+        {% for subscriber in subscribers %}
+          <tr>
+            <td>{{ subscriber.email }}</td>
+            <td>{{ subscriber.is_subscribed|yesno:'Subscribed,Not Subscribed' }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{% url 'stats' %}" class="btn btn-secondary btn-sm mt-1">Back to Dashboard</a>
+    <div class="pagination">
+      <span class="step-links">
+        {% if subscribers.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ subscribers.previous_page_number }}">previous</a>
+        {% endif %}
 
-      <span class="current">Page {{ subscribers.number }} of {{ subscribers.paginator.num_pages }}.</span>
+        <span class="current">Page {{ subscribers.number }} of {{ subscribers.paginator.num_pages }}.</span>
 
-      {% if subscribers.has_next %}
-        <a href="?page={{ subscribers.next_page_number }}">next</a>
-        <a href="?page={{ subscribers.paginator.num_pages }}">last &raquo;</a>
-      {% endif %}
-    </span>
-  </div>
-
-</section>
-
+        {% if subscribers.has_next %}
+          <a href="?page={{ subscribers.next_page_number }}">next</a>
+          <a href="?page={{ subscribers.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+  </section>
 {% endblock %}

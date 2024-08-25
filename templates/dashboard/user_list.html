@@ -1,32 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}User List{% endblock %}
+{% block title %}
+  User List
+{% endblock %}
 
 {% block content %}
-
-<style>
-  section{
-   margin: 200px 100px;
-   border: 1px solid #b5b5b5;
-   padding: 50px 50px;
-   background:#f9f5f5 ;
-   
- }
-
- @media only screen and (max-width: 450px)
-            {
-                  section{
-   
-    margin: 200px 10px;
-    border: 1px solid #b5b5b5;
-    padding: 5px 5px;
-    background:#f9f5f5 ;
+  <style>
+    section {
+      margin: 200px 100px;
+      border: 1px solid #b5b5b5;
+      padding: 50px 50px;
+      background: #f9f5f5;
+    }
     
-  }}
-</style>
-<section>
-  <h1>User List</h1>
-
+    @media only screen and (max-width: 450px) {
+      section {
+        margin: 200px 10px;
+        border: 1px solid #b5b5b5;
+        padding: 5px 5px;
+        background: #f9f5f5;
+      }
+    }
+  </style>
+  <section>
+    <h1>User List</h1>
+    <a href="{% url 'export_users_to_excel' %}" class="btn btn-dark btn-sm mb-4">Export to Excel</a>
     {% if page_obj %}
       <table class="table">
         <thead>
@@ -54,7 +52,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <a href="{% url 'export_users_to_excel' %}" class="btn btn-dark btn-sm mb-4">Export to Excel</a>
+      <a href="{% url 'stats' %}" class="btn btn-secondary btn-sm mt-1">Back to Dashboard</a>
       <div class="pagination">
         <span class="step-links">
           {% if page_obj.has_previous %}
@@ -73,7 +71,5 @@
     {% else %}
       <p>No users found.</p>
     {% endif %}
-
-</section>
-    
+  </section>
 {% endblock %}
