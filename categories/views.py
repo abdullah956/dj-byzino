@@ -34,12 +34,14 @@ def product_detail_view(request, id):
     return render(request, 'categories/product_detail.html', context)
 
 
+
 def category_products_view(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     products = Product.objects.filter(category=category).annotate(
         average_rating=Avg('review__stars')
-    )
-    paginator = Paginator(products, 9)
+    ).order_by('name')  # Order products to ensure consistent pagination
+
+    paginator = Paginator(products, 9)  # Adjust the number of products per page as needed
     page_number = request.GET.get('page')
     page_products = paginator.get_page(page_number)
 
@@ -47,7 +49,6 @@ def category_products_view(request, category_id):
         'category': category,
         'products': page_products
     })
-
 
 
 @login_required(login_url='/login/')
