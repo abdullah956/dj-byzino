@@ -235,7 +235,10 @@ def contact_message_view(request):
 #search
 def product_search_view(request):
     query = request.GET.get('q', '')
-    products = Product.objects.filter(name__icontains=query)
+    products = Product.objects.filter(name__icontains=query).annotate(
+        average_rating=Avg('review__stars')
+    )
+    print(products)
     return render(request, 'users/search_result.html', {
         'products': products,
         'query': query,

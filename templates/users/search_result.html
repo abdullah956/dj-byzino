@@ -4,25 +4,57 @@
 {% block title %}
   Search Results
 {% endblock %}
-
+{% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/categories_responsive.css' %}" />
+{% endblock %}
 {% block content %}
   <h1>Search Results for "{{ query }}"</h1>
+  <div class="row products_container">
+    <div class="col">
+      <!-- Products -->
+      <div class="product_grid">
+        <!-- Product -->
+        {% for product in products %}
+          <div class="product">
+            <div class="product_image">
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+            </div>
+            <div class="rating rating_{{ product.rating }}" data-rating="{{ product.rating }}">
+              {% for i in "12345" %}
+                <i class="fa fa-star"
+                  style="color: {% if i|add:'0' <= product.average_rating %}
+                    gold
+                  {% else %}
+                    gray
+                  {% endif %};">
 
-  {% if products.exists %}
-    {% for product in products %}
-      <div class="product">
-        <h2>{{ product.name }}</h2>
-        <p>Price: {{ product.price }}</p>
-        <p>Description: {{ product.description }}</p>
-        {% if product.image %}
-          <img src="{{ product.image.url }}" alt="{{ product.name }}" />
-        {% else %}
-          <img src="{% static 'images/default_product.jpg' %}" alt="Default Image" />
-        {% endif %}
+                </i>
+              {% endfor %}
+            </div>
+            <div class="product_content clearfix">
+              <div class="product_info">
+                <div class="product_name">
+                  <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                </div>
+                <div class="product_price">
+                  {% if product.is_on_sale %}
+                    <span class="sale_price">${{ product.sale_price }}</span>
+                    <sub style="text-decoration: line-through; color: #b1b1b1;">${{ product.price }}</sub>
+                  {% else %}
+                    ${{ product.price }}
+                  {% endif %}
+                </div>
+              </div>
+              <div class="product_options">
+                <div class="product_buy product_option">
+                  <a href="{% url 'add_to_cart' product.id 1 %}" class="product_buy product_option"><img src="{% static 'images/shopping-bag-white.svg' %}" alt="Buy {{ product.name }}" /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
       </div>
-      
-    {% endfor %}
-  {% else %}
-    <p>No results found.</p>
-  {% endif %}
+    </div>
+  </div>
 {% endblock %}
