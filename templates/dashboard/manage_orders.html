@@ -2,7 +2,35 @@
 {% block title %}Manage Orders{% endblock %}
 
 {% block content %}
-
+<style>
+    .pagination_container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .pagination .page-item {
+      display: inline-block;
+    }
+    
+    .pagination .page-link {
+      color: #545454;
+      background-color: #f9f5f5;
+      border: 1px solid #d2d2d2;
+      padding: 8px 16px;
+      text-decoration: none;
+    }
+    
+    .pagination .page-item.active .page-link {
+      background-color: #937c6f;
+      border-color: #d2d2d2;
+    }
+    
+    .pagination .page-link:hover {
+      background-color: #937c6f;
+      color: #fff;
+      transition: background-color 0.3s, color 0.3s;
+    }
+</style>
 <style>
      section{
    margin: 200px 100px;
@@ -65,21 +93,32 @@
     </div>
     
 <a href="{% url 'stats' %}" class="btn btn-secondary btn-sm mt-1">Back to Dashboard</a>
-    <div class="pagination">
-        <span class="step-links">
-            {% if orders.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ orders.previous_page_number }}">previous</a>
-            {% endif %}
+    <div class="pagination_container">
+    <ul class="pagination">
+        {% if orders.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ orders.previous_page_number }}">Previous</a>
+            </li>
+        {% endif %}
 
-            <span class="current">Page {{ orders.number }} of {{ orders.paginator.num_pages }}.</span>
+        <li class="page-item disabled">
+            <span class="page-link">Page {{ orders.number }} of {{ orders.paginator.num_pages }}</span>
+        </li>
 
-            {% if orders.has_next %}
-                <a href="?page={{ orders.next_page_number }}">next</a>
-                <a href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
+        {% if orders.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ orders.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ orders.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
 
 </section>
     

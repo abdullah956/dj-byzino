@@ -162,31 +162,34 @@
       </div>
 
       <!-- Pagination Controls -->
-      <div class="pagination_container">
+      {% if recent_orders.has_other_pages %}
+    <div class="pagination_container">
         <ul class="pagination">
-          {% if recent_orders.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ recent_orders.previous_page_number }}">Previous</a>
-            </li>
-          {% endif %}
-          {% for num in recent_orders.paginator.page_range %}
-            {% if recent_orders.number == num %}
-              <li class="page-item active">
-                <a class="page-link">{{ num }}</a>
-              </li>
-            {% else %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-              </li>
+            {% if recent_orders.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ recent_orders.previous_page_number }}">Previous</a>
+                </li>
             {% endif %}
-          {% endfor %}
-          {% if recent_orders.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ recent_orders.next_page_number }}">Next</a>
-            </li>
-          {% endif %}
+            {% for num in recent_orders.paginator.page_range %}
+                {% if recent_orders.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link">{{ num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if recent_orders.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ recent_orders.next_page_number }}">Next</a>
+                </li>
+            {% endif %}
         </ul>
-      </div>
+    </div>
+{% endif %}
+
     </div>
   </section>
 {% endblock %}

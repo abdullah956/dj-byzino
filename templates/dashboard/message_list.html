@@ -1,89 +1,116 @@
 {% extends 'base.html' %}
-{% block title %}Messages{% endblock %}
+{% block title %}
+  Messages
+{% endblock %}
 
 {% block content %}
-
 <style>
-    section{
-   margin: 200px 100px;
-   border: 1px solid #b5b5b5;
-   padding: 50px 50px;
-   background:#f9f5f5 ;
-   
- }
-
-
- 
-
-
+    .pagination_container {
+      text-align: center;
+      margin-top: 20px;
+    }
     
-   
-
-         @media only screen and (max-width: 450px)
-            {
-                  section{
-   
-    margin: 200px 10px;
-    border: 1px solid #b5b5b5;
-    padding: 5px 5px;
-    background:#f9f5f5 ;
+    .pagination .page-item {
+      display: inline-block;
+    }
     
-  }}
+    .pagination .page-link {
+      color: #545454;
+      background-color: #f9f5f5;
+      border: 1px solid #d2d2d2;
+      padding: 8px 16px;
+      text-decoration: none;
+    }
+    
+    .pagination .page-item.active .page-link {
+      background-color: #937c6f;
+      border-color: #d2d2d2;
+    }
+    
+    .pagination .page-link:hover {
+      background-color: #937c6f;
+      color: #fff;
+      transition: background-color 0.3s, color 0.3s;
+    }
 </style>
-<section>
-
+  <style>
+    section {
+      margin: 200px 100px;
+      border: 1px solid #b5b5b5;
+      padding: 50px 50px;
+      background: #f9f5f5;
+    }
+    
+    @media only screen and (max-width: 450px) {
+      section {
+        margin: 200px 10px;
+        border: 1px solid #b5b5b5;
+        padding: 5px 5px;
+        background: #f9f5f5;
+      }
+    }
+  </style>
+  <section>
     <h1>Messages</h1>
     <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>View Message</th>
-                <th>Reply</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for message in page_obj %}
-                <tr>
-                    <td>{{ message.email }}</td>
-                    
-                    <td>
-                        <a href="{% url 'message_detail' message.id %}" class="btn btn-info btn-sm position-relative">
-                            {% if not message.is_read %}
-                                <span class="badge bg-danger position-absolute" style="top: 0; right: 0; transform: translate(50%, -50%);">
-                                    •
-                                </span>
-                            {% endif %}
-                            View
-                        </a>
-                    </td>
-                    
-                    <td>
-                        <a href="mailto:{{ message.email }}" class="btn btn-primary btn-sm">Reply</a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="3">No messages found.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>View Message</th>
+          <th>Reply</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for message in page_obj %}
+          <tr>
+            <td>{{ message.email }}</td>
+
+            <td>
+              <a href="{% url 'message_detail' message.id %}" class="btn btn-info btn-sm position-relative">
+                {% if not message.is_read %}
+                  <span class="badge bg-danger position-absolute" style="top: 0; right: 0; transform: translate(50%, -50%);">•</span>
+                {% endif %}View
+              </a>
+            </td>
+
+            <td>
+              <a href="mailto:{{ message.email }}" class="btn btn-primary btn-sm">Reply</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3">No messages found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
-<a href="{% url 'stats' %}" class="btn btn-secondary btn-sm mt-1">Back to Dashboard</a>
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    <a href="{% url 'stats' %}" class="btn btn-secondary btn-sm mt-1">Back to Dashboard</a>
+    {% if page_obj.has_other_pages %}
+      <div class="pagination_container">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+          {% endif %}
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="page-item active">
+                <a class="page-link">{{ num }}</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
             {% endif %}
-
-            <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
-
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
-</section>
-
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    {% endif %}
+  </section>
 {% endblock %}
