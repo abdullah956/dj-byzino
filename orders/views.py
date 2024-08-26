@@ -154,7 +154,7 @@ def success_view(request, order_id):
         except Order.DoesNotExist:
             print(f"Order with ID {order_id} does not exist")
 
-    return render(request, 'orders/success.html')
+    return redirect('index')
 
 
 def cancel_view(request,order_id):
@@ -184,4 +184,4 @@ def cancel_view(request,order_id):
             messages.error(request, 'Order not found.')
             return redirect('index')
 
-    return render(request, 'orders/cancel.html')
+    return redirect('index')
