@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -143,8 +143,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'abdullaharshed956@gmail.com'
-EMAIL_HOST_PASSWORD = 'xuqyykmhdflkjbsu'
+EMAIL_HOST_USER = 'business.byzino@gmail.com'
+EMAIL_HOST_PASSWORD = 'phjudwiengxdaxbs'
 
 
 
@@ -153,5 +153,5 @@ EMAIL_HOST_PASSWORD = 'xuqyykmhdflkjbsu'
 OTP_SECRET_KEY = 'base32secret3232'  # Replace with a secure key in production
 
 # stripe fake
-STRIPE_TEST_PUBLIC_KEY = 'pk_test_TYooMQauvdEDq54NiTphI7jx'
-STRIPE_TEST_SECRET_KEY = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
+STRIPE_LIVE_SECRET_KEY = os.getenv("STRIPE_LIVE_SECRET_KEY")
+STRIPE_LIVE_PUBLIC_KEY = os.getenv("STRIPE_LIVE_PUBLIC_KEY")

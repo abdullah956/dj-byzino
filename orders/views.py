@@ -100,7 +100,7 @@ def checkout_process_view(request):
         return redirect('index')
     return render(request, 'orders/checkout.html')
 
-stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+stripe.api_key = settings.STRIPE_LIVE_SECRET_KEY
 
 def create_checkout_session(request, order_id , amount):
     if request.method == 'GET':
@@ -112,7 +112,7 @@ def create_checkout_session(request, order_id , amount):
                     'price_data': {
                         'currency': 'usd',
                         'product_data': {
-                            'name': 'Sample Product',
+                            'name': 'Price',
                         },
                         'unit_amount': int(amount),
                     },
