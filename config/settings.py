@@ -10,7 +10,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-5*vv($e%2zy6)w^#fe7$=mvx1p*8cv_h2ojdrrc@^j^&o_qh5y'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -36,7 +35,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,7 +123,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # media uploaded 
 MEDIA_URL = '/media/'
@@ -144,13 +143,10 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'business.byzino@gmail.com'
-EMAIL_HOST_PASSWORD = 'phjudwiengxdaxbs'
-
-
-
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 # settings.py
-OTP_SECRET_KEY = 'base32secret3232'  # Replace with a secure key in production
+OTP_SECRET_KEY = os.getenv('OTP_SECRET_KEY')
 
 # stripe fake
 STRIPE_LIVE_SECRET_KEY = os.getenv("STRIPE_LIVE_SECRET_KEY")
