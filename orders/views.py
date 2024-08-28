@@ -80,7 +80,7 @@ def checkout_process_view(request):
         message = (
             f'Thank you for your order!\n\n'
             f'Order ID: {order.id}\n'
-            f'Amount: ${total_amount / 100:.2f}\n'
+            f'Amount: €{total_amount / 100:.2f}\n'
             f'Status: {order.status}\n\n'
             f'Billing Address:\n{billing_address}\n\n'
             f'Shipping Address:\n{shipping_address}\n\n'
@@ -110,7 +110,7 @@ def create_checkout_session(request, order_id , amount):
             line_items=[
                 {
                     'price_data': {
-                        'currency': 'usd',
+                        'currency': 'eur',
                         'product_data': {
                             'name': 'Price',
                         },
@@ -139,7 +139,7 @@ def success_view(request, order_id):
             message = (
                 f'Your payment was successful!\n\n'
                 f'Order ID: {order.id}\n'
-                f'Amount: ${order.amount / 100:.2f}\n'
+                f'Amount: €{order.amount / 100:.2f}\n'
                 f'Status: Paid\n\n'
                 f'Thank you for your payment. Your order is now processed and will be shipped soon.'
             )
@@ -169,7 +169,7 @@ def cancel_view(request,order_id):
             message = (
                 f'We are sorry to inform you that your order could not be processed due to a payment issue.\n\n'
                 f'Order ID: {order.id}\n'
-                f'Amount: ${order.amount / 100:.2f}\n'
+                f'Amount: €{order.amount / 100:.2f}\n'
                 f'Status: {order.status}\n\n'
                 f'Please contact our support team for further assistance or try placing your order again.'
             )
