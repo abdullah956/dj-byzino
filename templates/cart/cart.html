@@ -132,8 +132,8 @@
                 <div class="cart_total_price ml-auto" id="cart_subtotal">$35.00</div>
               </li>
               <li class="d-flex flex-row align-items-center justify-content-start">
-                <div class="cart_total_title">Shipping</div>
-                <div class="cart_total_price ml-auto" id="cart_shipping">$5.00</div>
+                <div class="cart_total_title">Free Shipping</div>
+                <div class="cart_total_price ml-auto" id="cart_shipping">$0.00</div>
               </li>
               <li class="d-flex flex-row align-items-center justify-content-start">
                 <div class="cart_total_title">Total</div>
@@ -171,7 +171,7 @@
           const totalPrice = parseFloat(totalElement.textContent.replace('$', ''))
           subtotal += totalPrice
         })
-        const shippingCost = 5.0
+        const shippingCost = 0.0
         const total = subtotal + shippingCost
         document.getElementById('cart_subtotal').textContent = `$${subtotal.toFixed(2)}`
         document.getElementById('cart_total').textContent = `$${total.toFixed(2)}`

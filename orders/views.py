@@ -26,7 +26,7 @@ def checkout_view(request):
         item.total_price = Decimal(item_price) * item.quantity
     
     subtotal = sum(item.total_price for item in cart_items)
-    shipping_cost = Decimal('5.00')
+    shipping_cost = Decimal('0.00')
     total = subtotal + shipping_cost
     
     context = {
