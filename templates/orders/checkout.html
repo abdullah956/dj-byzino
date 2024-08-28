@@ -103,20 +103,20 @@
                   {% for item in cart_items %}
                     <li class="d-flex flex-row align-items-center justify-content-start">
                       <div class="cart_total_title">{{ item.product.name }} x{{ item.quantity }}</div>
-                      <div class="cart_total_price ml-auto">${{ item.total_price }}</div>
+                      <div class="cart_total_price ml-auto">€{{ item.total_price }}</div>
                     </li>
                   {% endfor %}
                   <li class="d-flex flex-row align-items-center justify-content-start">
                     <div class="cart_total_title">Subtotal</div>
-                    <div class="cart_total_price ml-auto">${{ subtotal }}</div>
+                    <div class="cart_total_price ml-auto">€{{ subtotal }}</div>
                   </li>
                   <li class="d-flex flex-row align-items-center justify-content-start">
                     <div class="cart_total_title">Shipping</div>
-                    <div class="cart_total_price ml-auto">${{ shipping_cost }}</div>
+                    <div class="cart_total_price ml-auto">€{{ shipping_cost }}</div>
                   </li>
                   <li class="d-flex flex-row align-items-start justify-content-start total_row">
                     <div class="cart_total_title">Total</div>
-                    <div class="cart_total_price ml-auto">${{ total }}</div>
+                    <div class="cart_total_price ml-auto">€{{ total }}</div>
                     <input type="hidden" name="total" value="{{ total }}" />
                   </li>
                 </ul>
