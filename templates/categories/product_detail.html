@@ -63,10 +63,10 @@
             <div class="product_name">{{ product.name }}</div>
             <div class="product_price">
               {% if product.is_on_sale %}
-                <span class="sale_price">${{ product.sale_price }}</span>
-                <sub style="text-decoration: line-through; color: #888;">${{ product.price }}</sub>
+                <span class="sale_price">€{{ product.sale_price }}</span>
+                <sub style="text-decoration: line-through; color: #888;">€{{ product.price }}</sub>
               {% else %}
-                ${{ product.price }}
+                €{{ product.price }}
               {% endif %}
             </div>
             <div class="rating rating_4" data-rating="{{ product.rating }}">

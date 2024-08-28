@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <p><strong>Email:</strong> {{ order.email }}</p>
-                    <p><strong>Amount:</strong> ${{ order.amount|floatformat:2 }}</p>
+                    <p><strong>Amount:</strong> €{{ order.amount|floatformat:2 }}</p>
                     <p><strong>Order Date:</strong> {{ order.order_date }}</p>
                     <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
                     <p><strong>Status:</strong> {{ order.status }}</p>

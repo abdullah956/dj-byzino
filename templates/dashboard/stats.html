@@ -110,7 +110,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Total Earnings</h5>
-              <p class="card-text">${{ total_earnings|floatformat:2 }}</p>
+              <p class="card-text">€{{ total_earnings|floatformat:2 }}</p>
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@
                   <a class="btn btn-dark btn-sm" href="{% url 'order_detail' order.id %}">View Order {{ order.id }}</a>
                 </td>
                 <td>{{ order.email }}</td>
-                <td>${{ order.amount|floatformat:2 }}</td>
+                <td>€{{ order.amount|floatformat:2 }}</td>
                 <td>{{ order.order_date }}</td>
                 <td>{{ order.payment_method }}</td>
                 <td>{{ order.status }}</td>
