@@ -166,7 +166,7 @@ def manage_orders(request):
                     'Order Canceled',
                     f'Your order #{order.id} has been canceled.',
                     settings.DEFAULT_FROM_EMAIL,
-                    [order.user.email],
+                    [order.email],
                 )
                 messages.success(request, f'Order #{order.id} status updated to "Canceled".')
             elif new_status == 'delivered':
@@ -174,7 +174,7 @@ def manage_orders(request):
                     'Order Delivered',
                     f'Your order #{order.id} has been delivered.',
                     settings.DEFAULT_FROM_EMAIL,
-                    [order.user.email],
+                    [order.email],
                 )
                 messages.success(request, f'Order #{order.id} status updated to "Delivered".')
 
@@ -188,7 +188,7 @@ def manage_orders(request):
                     'Order Shipped',
                     f'Your order #{order.id} has been shipped.',
                     settings.DEFAULT_FROM_EMAIL,
-                    [order.user.email],
+                    [order.email],
                 )
                 messages.success(request, f'Order #{order.id} marked as shipped.')
 

@@ -74,7 +74,7 @@
                             {% csrf_token %}
                             <input type="hidden" name="order_id" value="{{ order.id }}">
                             <td><a class="btn btn-dark btn-sm" href="{% url 'order_detail' order.id %}">View Order {{ order.id }}</a></td>
-                            <td>{{ order.user.email }}</td>
+                            <td>{{ order.email }}</td>
                             <td><input type="checkbox" name="is_shipped" {% if order.is_shipped %}checked{% endif %}></td>
                             <td><input type="checkbox" name="is_paid" {% if order.is_paid %}checked{% endif %}></td>
                             <td>
