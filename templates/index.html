@@ -6,7 +6,18 @@
 
 {% block content %}
   <!-- Home -->
-
+<style>
+		.top-button{
+			color: white;
+			font-size: 24px;
+			border: 2px solid white;
+			padding: 2px 25px;
+		}
+		.top-button:hover{
+			color: white;
+			border: 3px solid white;
+		}
+	</style>
   <div class="home">
     <!-- Home Slider -->
     <div class="home_slider_container">
@@ -14,11 +25,22 @@
         <!-- Home Slider Item -->
         <div class="owl-item">
           <div class="home_slider_background" style="background-image:url({% static 'images/1.png' %})"></div>
-          <div class="home_slider_content"></div>
+          <div class="home_slider_content">
+						<div class="home_slider_content_inner mt-5">
+							
+							<a href="{% url 'products' %}" class="top-button">Shop Now</a>
+						</div>
+					</div>
         </div>
         <!-- Home Slider Item -->
         <div class="owl-item">
           <div class="home_slider_background" style="background-image:url({% static 'images/download.png' %})"></div>
+          <div class="home_slider_content">
+						<div class="home_slider_content_inner mt-5">
+							
+							<a href="{% url 'products' %}" class="top-button">Shop Now</a>
+						</div>
+					</div>
         </div>
       </div>
 
